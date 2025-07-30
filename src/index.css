@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Efeitos de Interatividade nos Cantos */
+.corner-glow {
+    position: absolute;
+    width: 150px; /* Tamanho do ponto de luz */
+    height: 150px; /* Tamanho do ponto de luz */
+    background: radial-gradient(circle, rgba(0, 255, 255, 0.3) 0%, rgba(0, 255, 255, 0) 70%); /* Cian com transparência */
+    border-radius: 50%; /* Faz com que seja um círculo */
+    filter: blur(50px); /* Suaviza o brilho */
+    pointer-events: none; /* Garante que não interfira com cliques */
+    opacity: 0.2; /* Opacidade inicial */
+    animation: pulse-glow 4s infinite alternate ease-in-out; /* Animação de pulso */
+    z-index: 0; /* Coloca no fundo */
+}
+
+/* Posições para os cantos */
+.corner-glow.top-0.left-0 {
+    top: -75px; /* Metade da largura/altura para centralizar na quina */
+    left: -75px;
+}
+
+.corner-glow.top-0.right-0 {
+    top: -75px;
+    right: -75px;
+}
+
+.corner-glow.bottom-0.left-0 {
+    bottom: -75px;
+    left: -75px;
+}
+
+.corner-glow.bottom-0.right-0 {
+    bottom: -75px;
+    right: -75px;
+}
+
+/* Efeito de brilho central (opcional, se você adicionou o .center-glow) */
+.center-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 250px;
+    height: 250px;
+    background: radial-gradient(circle, rgba(168, 85, 247, 0.2) 0%, rgba(168, 85, 247, 0) 70%); /* Roxo com transparência */
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+    opacity: 0.15;
+    animation: subtle-pulse 6s infinite alternate ease-in-out;
+    z-index: 0;
+}
+
+
+/* Animação de pulso para os cantos */
+@keyframes pulse-glow {
+    0% { opacity: 0.2; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(1.1); }
+    100% { opacity: 0.2; transform: scale(1); }
+}
+
+/* Animação de pulso mais suave para o centro */
+@keyframes subtle-pulse {
+    0% { opacity: 0.15; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 0.25; transform: translate(-50%, -50%) scale(1.05); }
+    100% { opacity: 0.15; transform: translate(-50%, -50%) scale(1); }
+}
