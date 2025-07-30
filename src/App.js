@@ -349,7 +349,7 @@ const App = () => {
                 transition={{ duration: 0.7, ease: "easeOut", delay: 0.3 }}
               >
                 <p className="mb-4">
-                  <span className="text-cyan-300">&gt;</span> Sou um desenvolvedor backend com X anos de experiência na criação e manutenção de sistemas robustos e de alta performance. Minha paixão reside em resolver problemas complexos e otimizar processos para garantir a escalabilidade e a segurança das aplicações.
+                  <span className="text-cyan-300">&gt;</span> Sou um desenvolvedor backend com 3 anos de experiência na criação e manutenção de sistemas robustos e de alta performance. Minha paixão reside em resolver problemas complexos e otimizar processos para garantir a escalabilidade e a segurança das aplicações.
                 </p>
                 <p className="mb-4">
                   <span className="text-cyan-300">&gt;</span> Possuo proficiência nas principais linguagens e frameworks da área, incluindo:
