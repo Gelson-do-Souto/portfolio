@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { motion } from 'framer-motion'; // Importe motion do framer-motion
+import { motion } from 'framer-motion';
 
 // Lucide-react icons for a modern look
 import { Home, User, Code, Mail, Linkedin, Github, ExternalLink, Award, Database, Cloud, Terminal, GitBranch } from 'lucide-react';
@@ -36,11 +36,11 @@ const App = () => {
     const onMouseMove = (e) => {
       cursor.style.left = `${e.clientX}px`;
       cursor.style.top = `${e.clientY}px`;
-      cursor.style.opacity = '1'; // Make cursor visible on mouse move
+      cursor.style.opacity = '1';
     };
 
     const onMouseLeave = () => {
-      cursor.style.opacity = '0'; // Hide cursor when mouse leaves window
+      cursor.style.opacity = '0';
     };
 
     window.addEventListener('mousemove', onMouseMove);
@@ -66,7 +66,7 @@ const App = () => {
     const observerOptions = {
       root: null,
       rootMargin: '0px',
-      threshold: 0.7, // Adjust as needed for when a section is considered "active"
+      threshold: 0.7,
     };
 
     const observerCallback = (entries) => {
@@ -79,7 +79,6 @@ const App = () => {
 
     const observer = new IntersectionObserver(observerCallback, observerOptions);
 
-    // Observe each section
     ['home', 'about', 'projects', 'certificates', 'contact'].forEach((id) => {
       const section = document.getElementById(id);
       if (section) {
@@ -88,7 +87,6 @@ const App = () => {
     });
 
     return () => {
-      // Clean up observer on unmount
       ['home', 'about', 'projects', 'certificates', 'contact'].forEach((id) => {
         const section = document.getElementById(id);
         if (section) {
@@ -98,44 +96,99 @@ const App = () => {
     };
   }, []);
 
-  // Contact form submission handler
+  // Contact form submission handler (agora apenas para feedback visual)
   const handleContactSubmit = (e) => {
-    e.preventDefault();
-    console.log('Formulário de contato enviado!');
-    if (contactFormRef.current) {
-      contactFormRef.current.reset();
-      const submitButton = contactFormRef.current.querySelector('button[type="submit"]');
+    // Mantém o comportamento nativo de envio do formulário, mas adiciona feedback
+    const submitButton = e.currentTarget.querySelector('button[type="submit"]');
+    if (submitButton) {
+      submitButton.textContent = 'Enviando...';
+    }
+
+    // Este timeout simula o tempo de resposta do servidor
+    setTimeout(() => {
       if (submitButton) {
         submitButton.textContent = 'Enviado!';
         submitButton.classList.add('bg-green-600');
+        
         setTimeout(() => {
           submitButton.textContent = 'Enviar Mensagem';
           submitButton.classList.remove('bg-green-600');
+          if (contactFormRef.current) {
+            contactFormRef.current.reset();
+          }
         }, 2000);
       }
-    }
+    }, 1000);
   };
-
+    
+  // Array de Certificados
   const certificates = [
     {
       title: "Software Engineering - PROFESSIONAL DIPLOMA PROGRAM",
       issuer: "European Open University",
       date: "Setembro 23, 2024",
-      link: "#"
+      link: "#",
+      imageUrl: "/images/diploma.jpg" // Adicione a imagem do seu diploma
     },
     {
       title: "Create a Lead Generation Messenger Chatbot using Chatfuel",
       issuer: "Coursera Project Network",
       date: "Agosto 20, 2024",
-      link: "https://coursera.org/verify/8M05XMEJU265"
+      link: "https://coursera.org/verify/8M05XMEJU265",
+      imageUrl: "/images/coursera.jpg" // Adicione a imagem do seu certificado da Coursera
     },
     {
       title: "Fundamentos do Python 1",
       issuer: "Cisco Networking Academy",
       date: "Dezembro 02, 2024",
-      link: "#"
+      link: "#",
+      imageUrl: "/images/python_cisco.jpg" // Adicione a imagem do seu certificado da Cisco
+    },
+    {
+      title: "Odoo Functional Certification - SAMPLE",
+      issuer: "Odoo S.A.",
+      date: "Março 07, 2025", // Data de Conclusão do certificado da Odoo
+      link: "#", // URL não disponível nos arquivos
+      imageUrl: "/images/odoo.jpg" // Adicione a imagem do seu certificado da Odoo
     },
   ];
+
+  // Adicione seus projetos aqui
+  const projects = [
+    {
+      title: "KzEduca APP",
+      description: "Uma app para educação financeira, focado no mercado Angolano, com o objectivo de resolver problemas de Finança pessoal e empresarial.",
+      imageUrl: "images/Kz.png",
+      tags: ["Flutter", "Dart", "Farebase"],
+      githubUrl: "https://github.com/Gelson-do-Souto/KzEduca-app"
+    },
+    {
+      title: "Gson Creativity Site",
+      description: "Focado para uma empresa de prestação de serviços.",
+      imageUrl: "images/Gson.png",
+      tags: ["Html", "CSS", "JavaSript"],
+      githubUrl: "https://github.com/Gelson-do-Souto/Site_Gson_Creativity",
+      demoUrl: "https://gson-creativity.vercel.app/"
+    },
+    {
+      title: "Modulo de Localização - Odoo",
+      description: "Focados nos planos de contas Angolano, as Taxas e Localização. E maisssssss....",
+      imageUrl: "images/projecto.png",
+      tags: ["Python", "XML", "PostgreSQL", "CSV"],
+    },
+    {
+      title: "Nany App",
+      description: "Uma rede Social. Feito por Hobby.",
+      imageUrl: "images/nan.png",
+      tags: ["Flutter", "Dart", "Farebase", "Python"],
+      githubUrl: "https://github.com/Gelson-do-Souto/App_nany",
+      demoUrl: "#"
+    },
+  ];
+
+  // Duplicar a lista de projetos e certificados para o carrossel infinito
+  const duplicatedProjects = [...projects, ...projects];
+  const duplicatedCertificates = [...certificates, ...certificates];
 
   const skillCategories = [
     {
@@ -189,7 +242,7 @@ const App = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-950 to-gray-800 text-gray-100 font-inter relative overflow-hidden">
-      {/* Vídeo de fundo */}
+      {/* Background Video */}
       <video
         autoPlay
         loop
@@ -201,14 +254,14 @@ const App = () => {
         Seu navegador não suporta vídeos.
       </video>
 
-      {/* Custom Mouse Follower - More prominent hacker style */}
+      {/* Custom Mouse Follower */}
       <div
         ref={cursorRef}
         className="pointer-events-none fixed z-50 -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-400 opacity-0 transition-all duration-100 ease-out mix-blend-screen shadow-glow"
         style={{ width: '25px', height: '25px', filter: 'blur(12px)' }}
       ></div>
 
-      {/* Navigation Bar - Slightly more aggressive dark theme */}
+      {/* Navigation Bar */}
       <nav className="fixed top-0 left-0 right-0 z-40 bg-gray-900 bg-opacity-90 backdrop-blur-sm p-4 shadow-2xl border-b border-cyan-700">
         <div className="container mx-auto flex justify-between items-center">
           <div className="text-2xl font-bold text-cyan-400 font-mono tracking-wide">Gelson do Souto</div>
@@ -276,13 +329,13 @@ const App = () => {
         {/* Home Section */}
         <motion.section
           id="home"
-          className="h-screen flex items-center justify-center text-center p-4" // Removido bg-gradient-to-br from-gray-950 to-gray-800 para o vídeo aparecer
+          className="h-screen flex items-center justify-center text-center p-4"
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 0.9, ease: "easeOut" }}
         >
-          <div className="max-w-3xl"> {/* Removido animate-fadeIn aqui */}
+          <div className="max-w-3xl">
             <h1 className="text-5xl md:text-7xl font-extrabold text-white leading-tight mb-4">
               Olá, eu sou <span className="text-cyan-400 text-shadow-neon">
                 <AnimatedText text="Gelson do Souto" delay={70} />
@@ -324,12 +377,12 @@ const App = () => {
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
           <div className="container mx-auto max-w-4xl">
-            <h2 className="text-4xl font-bold text-center text-cyan-400 mb-12"> {/* Removido animate-slideInUp */}
+            <h2 className="text-4xl font-bold text-center text-cyan-400 mb-12">
               <AnimatedText text="Sobre Mim" delay={70} />
             </h2>
             <div className="flex flex-col md:flex-row md:items-start md:space-x-10">
               <motion.div
-                className="md:w-1/3 mb-8 md:mb-0" // Removido animate-scaleIn
+                className="md:w-1/3 mb-8 md:mb-0"
                 initial={{ opacity: 0, scale: 0.8 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true, amount: 0.5 }}
@@ -342,14 +395,14 @@ const App = () => {
                 />
               </motion.div>
               <motion.div
-                className="md:w-2/3 text-lg text-gray-300 leading-relaxed font-mono" // Removido animate-fadeIn
+                className="md:w-2/3 text-lg text-gray-300 leading-relaxed font-mono"
                 initial={{ opacity: 0, x: 50 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, amount: 0.5 }}
                 transition={{ duration: 0.7, ease: "easeOut", delay: 0.3 }}
               >
                 <p className="mb-4">
-                  <span className="text-cyan-300">&gt;</span> Sou um desenvolvedor backend com X anos de experiência na criação e manutenção de sistemas robustos e de alta performance. Minha paixão reside em resolver problemas complexos e otimizar processos para garantir a escalabilidade e a segurança das aplicações.
+                  <span className="text-cyan-300">&gt;</span> Sou um desenvolvedor backend com 3 anos de experiência na criação e manutenção de sistemas robustos e de alta performance. Minha paixão reside em resolver problemas complexos e otimizar processos para garantir a escalabilidade e a segurança das aplicações.
                 </p>
                 <p className="mb-4">
                   <span className="text-cyan-300">&gt;</span> Possuo proficiência nas principais linguagens e frameworks da área, incluindo:
@@ -377,7 +430,7 @@ const App = () => {
                   </div>
 
                   <motion.div
-                    className="bg-gray-800 p-6 rounded-lg shadow-inner shadow-cyan-500/10 border border-gray-700" // Removido animate-fadeInUp
+                    className="bg-gray-800 p-6 rounded-lg shadow-inner shadow-cyan-500/10 border border-gray-700"
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, amount: 0.5 }}
@@ -406,7 +459,7 @@ const App = () => {
           </div>
         </motion.section>
 
-        {/* Projects Section */}
+        {/* Projects Section with Carousel */}
         <motion.section
           id="projects"
           className="py-20 bg-gray-950 p-4 border-t border-b border-gray-700"
@@ -416,63 +469,61 @@ const App = () => {
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
           <div className="container mx-auto max-w-5xl">
-            <h2 className="text-4xl font-bold text-center text-cyan-400 mb-12"> {/* Removido animate-slideInUp */}
+            <h2 className="text-4xl font-bold text-center text-cyan-400 mb-12">
               <AnimatedText text="Meus Projetos" delay={70} />
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {/* Project Cards (agora animadas individualmente) */}
-              {Array.from({ length: 3 }).map((_, index) => (
-                <motion.div
-                  key={index}
-                  className="bg-gray-800 rounded-lg shadow-xl shadow-purple-500/20 overflow-hidden transform hover:scale-105 transition-transform duration-300 border border-purple-700 project-card-hover"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true, amount: 0.2 }}
-                  transition={{ duration: 0.6, ease: "easeOut", delay: index * 0.15 }}
-                >
-                  <img
-                    src={`https://placehold.co/600x400/2D3748/A0AEC0?text=Projeto+${index + 1}`}
-                    alt={`Projeto ${index + 1}`}
-                    className="w-full h-48 object-cover border-b border-gray-700"
-                  />
-                  <div className="p-6">
-                    <h3 className="text-2xl font-semibold text-purple-300 mb-2 font-mono">Sistema de E-commerce Backend {index + 1}</h3>
-                    <p className="text-gray-400 mb-4 text-sm">
-                      Desenvolvimento de uma API RESTful completa para um sistema de e-commerce, incluindo autenticação, gerenciamento de produtos, carrinho de compras e processamento de pedidos.
-                    </p>
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      <span className="bg-gray-700 text-gray-300 text-xs px-3 py-1 rounded-full border border-gray-600 tag-glow">Python</span>
-                      <span className="bg-gray-700 text-gray-300 text-xs px-3 py-1 rounded-full border border-gray-600 tag-glow">Django REST Framework</span>
-                      <span className="bg-gray-700 text-gray-300 text-xs px-3 py-1 rounded-full border border-gray-600 tag-glow">PostgreSQL</span>
+            <div className="relative w-full overflow-hidden">
+              <div
+                className="flex space-x-8 animate-scroll"
+                style={{ animationDuration: `${projects.length * 8}s` }}
+              >
+                {duplicatedProjects.map((project, index) => (
+                  <motion.div
+                    key={index}
+                    className="flex-shrink-0 w-80 bg-gray-800 rounded-lg shadow-xl shadow-purple-500/20 overflow-hidden transform hover:scale-105 transition-transform duration-300 border border-purple-700 project-card-hover"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true, amount: 0.2 }}
+                    transition={{ duration: 0.6, ease: "easeOut", delay: index * 0.05 }}
+                  >
+                    <img
+                      src={project.imageUrl}
+                      alt={project.title}
+                      className="w-full h-48 object-cover border-b border-gray-700"
+                    />
+                    <div className="p-6">
+                      <h3 className="text-2xl font-semibold text-purple-300 mb-2 font-mono">{project.title}</h3>
+                      <p className="text-gray-400 mb-4 text-sm">{project.description}</p>
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        {project.tags.map((tag, tagIndex) => (
+                          <span key={tagIndex} className="bg-gray-700 text-gray-300 text-xs px-3 py-1 rounded-full border border-gray-600 tag-glow">
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                      <div className="flex justify-end space-x-3">
+                        {project.githubUrl && (
+                          <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300 transition-colors flex items-center space-x-1 hover:underline">
+                            <Github size={20} />
+                            <span className="font-mono">GitHub</span>
+                          </a>
+                        )}
+                        {project.demoUrl && project.demoUrl !== "#" && (
+                          <a href={project.demoUrl} target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300 transition-colors flex items-center space-x-1 hover:underline">
+                            <ExternalLink size={20} />
+                            <span className="font-mono">Demo</span>
+                          </a>
+                        )}
+                      </div>
                     </div>
-                    <div className="flex justify-end space-x-3">
-                      <a
-                        href="#"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-purple-400 hover:text-purple-300 transition-colors flex items-center space-x-1 hover:underline"
-                      >
-                        <Github size={20} />
-                        <span className="font-mono">GitHub</span>
-                      </a>
-                      <a
-                        href="#"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-purple-400 hover:text-purple-300 transition-colors flex items-center space-x-1 hover:underline"
-                      >
-                        <ExternalLink size={20} />
-                        <span className="font-mono">Demo</span>
-                      </a>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
+                  </motion.div>
+                ))}
+              </div>
             </div>
           </div>
         </motion.section>
 
-        {/* Certificates Section - New Section */}
+        {/* Certificates Section with Carousel */}
         <motion.section
           id="certificates"
           className="py-20 bg-gray-900 p-4 border-t border-b border-gray-700"
@@ -482,39 +533,45 @@ const App = () => {
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
           <div className="container mx-auto max-w-4xl">
-            <h2 className="text-4xl font-bold text-center text-purple-400 mb-12"> {/* Removido animate-slideInUp */}
+            <h2 className="text-4xl font-bold text-center text-purple-400 mb-12">
               <AnimatedText text="Meus Certificados" delay={70} />
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {certificates.map((cert, index) => (
-                <motion.div
-                  key={index}
-                  className="bg-gray-800 rounded-lg shadow-xl shadow-purple-500/20 overflow-hidden transform hover:scale-105 transition-transform duration-300 border border-purple-700 certificate-card-hover"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true, amount: 0.2 }}
-                  transition={{ duration: 0.6, ease: "easeOut", delay: index * 0.15 }}
-                >
-                  <div className="p-6">
-                    <h3 className="text-xl font-semibold text-purple-300 mb-2 font-mono">{cert.title}</h3>
-                    <p className="text-gray-400 text-sm mb-2">Emitido por: <span className="font-semibold text-gray-300">{cert.issuer}</span></p>
-                    <p className="text-gray-400 text-sm mb-4">Data: <span className="font-semibold text-gray-300">{cert.date}</span></p>
-                    {cert.link && cert.link !== '#' && (
-                      <div className="flex justify-end">
-                        <a
-                          href={cert.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-purple-400 hover:text-purple-300 transition-colors flex items-center space-x-1 hover:underline"
-                        >
-                          <ExternalLink size={18} />
-                          <span className="font-mono">Ver Certificado</span>
-                        </a>
-                      </div>
-                    )}
-                  </div>
-                </motion.div>
-              ))}
+            <div className="relative w-full overflow-hidden">
+              <div
+                className="flex space-x-8 animate-scroll"
+                style={{ animationDuration: `${certificates.length * 8}s` }}
+              >
+                {duplicatedCertificates.map((cert, index) => (
+                  <motion.div
+                    key={index}
+                    className="flex-shrink-0 w-80 bg-gray-800 rounded-lg shadow-xl shadow-purple-500/20 overflow-hidden transform hover:scale-105 transition-transform duration-300 border border-purple-700 certificate-card-hover"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true, amount: 0.2 }}
+                    transition={{ duration: 0.6, ease: "easeOut", delay: index * 0.05 }}
+                  >
+                    {/* Adiciona a imagem do certificado */}
+                    <img
+                      src={cert.imageUrl}
+                      alt={cert.title}
+                      className="w-full h-48 object-cover object-top border-b border-gray-700"
+                    />
+                    <div className="p-6">
+                      <h3 className="text-xl font-semibold text-purple-300 mb-2 font-mono">{cert.title}</h3>
+                      <p className="text-gray-400 text-sm mb-2">Emitido por: <span className="font-semibold text-gray-300">{cert.issuer}</span></p>
+                      <p className="text-gray-400 text-sm mb-4">Data: <span className="font-semibold text-gray-300">{cert.date}</span></p>
+                      {cert.link && cert.link !== '#' && (
+                        <div className="flex justify-end">
+                          <a href={cert.link} target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300 transition-colors flex items-center space-x-1 hover:underline">
+                            <ExternalLink size={18} />
+                            <span className="font-mono">Ver Certificado</span>
+                          </a>
+                        </div>
+                      )}
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
             </div>
           </div>
         </motion.section>
@@ -528,17 +585,17 @@ const App = () => {
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          {/* Subtle background animation (inspired by pandaguerrier.fr aesthetic) */}
+          {/* Subtle background animation */}
           <div className="absolute inset-0 z-0 opacity-10">
             <div className="w-full h-full bg-gradient-to-br from-blue-900 via-purple-900 to-pink-900 animate-gradientShift"></div>
           </div>
 
           <div className="container mx-auto max-w-2xl relative z-10">
-            <h2 className="text-4xl font-bold text-center text-cyan-400 mb-12"> {/* Removido animate-slideInUp */}
+            <h2 className="text-4xl font-bold text-center text-cyan-400 mb-12">
               <AnimatedText text="Entre em Contato" delay={70} />
             </h2>
             <motion.div
-              className="bg-gray-900 rounded-xl shadow-2xl shadow-cyan-500/30 p-8 md:p-12 border border-cyan-700 contact-form-border-glow" // Removido animate-scaleIn
+              className="bg-gray-900 rounded-xl shadow-2xl shadow-cyan-500/30 p-8 md:p-12 border border-cyan-700 contact-form-border-glow"
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true, amount: 0.5 }}
@@ -547,7 +604,14 @@ const App = () => {
               <p className="text-gray-300 text-center mb-8 text-lg font-mono">
                 <span className="text-cyan-300">&gt;</span> Ficarei feliz em discutir novas oportunidades ou responder a quaisquer perguntas.
               </p>
-              <form ref={contactFormRef} onSubmit={handleContactSubmit} className="space-y-6">
+              {/* ATENÇÃO: Substitua a URL abaixo pela sua URL do Formspree */}
+              <form 
+                ref={contactFormRef} 
+                onSubmit={handleContactSubmit} 
+                action="https://formspree.io/f/mjkonrvk" 
+                method="POST" 
+                className="space-y-6"
+              >
                 <div>
                   <label htmlFor="name" className="block text-gray-300 text-sm font-bold mb-2 font-mono">
                     Nome Completo <span className="text-cyan-400">_</span>
@@ -556,7 +620,7 @@ const App = () => {
                     type="text"
                     id="name"
                     name="name"
-                    className="shadow appearance-none border border-gray-700 rounded-lg w-full py-3 px-4 text-gray-100 leading-tight focus:outline-none focus:ring-2 focus:ring-cyan-500 bg-gray-700 transition-all duration-300 input-focus-glow" // Removido animate-inputFadeIn
+                    className="shadow appearance-none border border-gray-700 rounded-lg w-full py-3 px-4 text-gray-100 leading-tight focus:outline-none focus:ring-2 focus:ring-cyan-500 bg-gray-700 transition-all duration-300 input-focus-glow"
                     placeholder="Seu Nome"
                     required
                     initial={{ opacity: 0, y: 10 }}
@@ -566,14 +630,15 @@ const App = () => {
                   />
                 </div>
                 <div>
-                  <label htmlFor="email" className="block text-gray-300 text-sm font-bold mb-2 font-mono">
+                  <label htmlFor="_replyto" className="block text-gray-300 text-sm font-bold mb-2 font-mono">
                     Email <span className="text-cyan-400">_</span>
                   </label>
+                  {/* Formspree usa '_replyto' para o email de resposta */}
                   <motion.input
                     type="email"
                     id="email"
-                    name="email"
-                    className="shadow appearance-none border border-gray-700 rounded-lg w-full py-3 px-4 text-gray-100 leading-tight focus:outline-none focus:ring-2 focus:ring-cyan-500 bg-gray-700 transition-all duration-300 input-focus-glow" // Removido animate-inputFadeIn delay-100
+                    name="_replyto"
+                    className="shadow appearance-none border border-gray-700 rounded-lg w-full py-3 px-4 text-gray-100 leading-tight focus:outline-none focus:ring-2 focus:ring-cyan-500 bg-gray-700 transition-all duration-300 input-focus-glow"
                     placeholder="seu.email@exemplo.com"
                     required
                     initial={{ opacity: 0, y: 10 }}
@@ -590,7 +655,7 @@ const App = () => {
                     id="message"
                     name="message"
                     rows="6"
-                    className="shadow appearance-none border border-gray-700 rounded-lg w-full py-3 px-4 text-gray-100 leading-tight focus:outline-none focus:ring-2 focus:ring-cyan-500 bg-gray-700 transition-all duration-300 input-focus-glow" // Removido animate-inputFadeIn delay-200
+                    className="shadow appearance-none border border-gray-700 rounded-lg w-full py-3 px-4 text-gray-100 leading-tight focus:outline-none focus:ring-2 focus:ring-cyan-500 bg-gray-700 transition-all duration-300 input-focus-glow"
                     placeholder="Sua mensagem..."
                     required
                     initial={{ opacity: 0, y: 10 }}
@@ -602,7 +667,7 @@ const App = () => {
                 <div className="flex justify-center">
                   <motion.button
                     type="submit"
-                    className="bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-3 px-8 rounded-full transition-transform transform hover:scale-105 shadow-lg shadow-cyan-500/50 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 focus:ring-offset-gray-900 button-glow" // Removido animate-buttonPop
+                    className="bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-3 px-8 rounded-full transition-transform transform hover:scale-105 shadow-lg shadow-cyan-500/50 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 focus:ring-offset-gray-900 button-glow"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     initial={{ opacity: 0, scale: 0.9 }}
@@ -650,93 +715,121 @@ const App = () => {
       <style>{`
         /* Font import for Inter and Roboto Mono (for hacker aesthetic) */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Roboto+Mono:wght@400;500;700&display=swap');
-
-        body {
+        
+        .font-inter {
           font-family: 'Inter', sans-serif;
         }
 
         .font-mono {
-            font-family: 'Roboto Mono', monospace;
+          font-family: 'Roboto Mono', monospace;
         }
 
-        /* Custom glow effects */
-        .shadow-glow {
-            box-shadow: 0 0 10px rgba(0, 255, 255, 0.6), 0 0 20px rgba(0, 255, 255, 0.4);
-        }
-
-        .text-shadow-neon {
-            text-shadow: 0 0 2px rgba(0, 255, 255, 0.3), 0 0 4px rgba(0, 255, 255, 0.2), 0 0 6px rgba(0, 255, 255, 0.1);
-        }
-
-        .button-glow {
-            transition: all 0.3s ease-in-out;
-        }
-        .button-glow:hover {
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.8), 0 0 25px rgba(0, 255, 255, 0.6);
-        }
-
-        .input-focus-glow:focus {
-            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5), 0 0 10px rgba(59, 130, 246, 0.7); /* blue-500 with glow */
-        }
-
-        .project-card-hover:hover {
-            box-shadow: 0 0 20px rgba(168, 85, 247, 0.6), 0 0 30px rgba(168, 85, 247, 0.4);
-        }
-
-        .certificate-card-hover:hover {
-            box-shadow: 0 0 20px rgba(168, 85, 247, 0.6), 0 0 30px rgba(168, 85, 247, 0.4);
-        }
-
-        .contact-form-border-glow:focus-within {
-          box-shadow: 0 0 0 2px rgba(0, 255, 255, 0.5), 0 0 20px rgba(0, 255, 255, 0.7);
-        }
-
-        /* Video de fundo */
-        .background-video {
-          position: fixed; /* Usa fixed para cobrir toda a viewport */
-          right: 0;
-          bottom: 0;
-          min-width: 100%;
-          min-height: 100%;
-          width: auto;
-          height: auto;
-          z-index: -2; /* Abaixo de tudo, mas acima do fundo do body se houver */
-          background-size: cover;
-          overflow: hidden; /* Garante que nada transborde */
-          filter: brightness(0.4); /* Escurece o vídeo para o texto ficar mais legível */
-        }
-
-        /* Certifique-se de que o container principal tenha z-index para ficar acima do vídeo */
-        .min-h-screen.bg-gradient-to-br {
-            position: relative; /* Precisa ser relative para o z-index funcionar */
-            z-index: 0; /* Acima do vídeo de fundo (z-index: -2) */
-            /* Remova a cor de fundo 'bg-gradient-to-br from-gray-950 to-gray-800' se quiser que o vídeo seja visível em todas as seções */
-            /* Ou adicione um overlay semi-transparente para mesclar */
-        }
-
-        /* As animações originais Tailwind foram removidas das classes e agora são controladas pelo Framer Motion.
-           Mantenho as definições @keyframes aqui caso você queira reutilizá-las para outros elementos,
-           mas elas não serão aplicadas diretamente às seções via classes como antes. */
-
-        @keyframes fadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-        /* .animate-fadeIn */
-
+        /* Custom Animations */
         @keyframes fadeInChar {
-          from { opacity: 0; transform: translateY(5px); }
-          to { opacity: 1; transform: translateY(0); }
+          from {
+            opacity: 0;
+            transform: translateY(10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
         }
+        
         .animate-fadeInChar {
           animation: fadeInChar 0.5s ease-out forwards;
         }
 
-        @keyframes slideInUp {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
+        @keyframes pulse-border {
+          0% {
+            box-shadow: 0 0 0 0px rgba(6, 182, 212, 0.7);
+          }
+          50% {
+            box-shadow: 0 0 0 8px rgba(6, 182, 212, 0);
+          }
+          100% {
+            box-shadow: 0 0 0 0px rgba(6, 182, 212, 0);
+          }
         }
-        /* .animate-slideInUp */
+
+        .animate-pulse-border {
+          animation: pulse-border 2s infinite ease-out;
+        }
+
+        @keyframes gradientShift {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+
+        .animate-gradientShift {
+          background-size: 200% 200%;
+          animation: gradientShift 10s ease-in-out infinite;
+        }
+
+        /* Hover effects with pseudo-elements */
+        .project-card-hover:hover {
+          box-shadow: 0 20px 25px -5px rgb(168 85 247 / 0.5), 0 8px 10px -6px rgb(168 85 247 / 0.5);
+        }
+
+        .certificate-card-hover:hover {
+          box-shadow: 0 20px 25px -5px rgb(168 85 247 / 0.5), 0 8px 10px -6px rgb(168 85 247 / 0.5);
+        }
+
+        .tag-glow {
+          box-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+        }
+
+        .button-glow:hover {
+          box-shadow: 0 0 20px rgba(6, 182, 212, 0.8), 0 0 10px rgba(6, 182, 212, 0.5);
+        }
+
+        /* Custom scroll animation for carousels */
+        @keyframes scroll {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(calc(-50% - 16px)); /* 50% for one set, 16px for half of the space */
+          }
+        }
+
+        .animate-scroll {
+          animation: scroll linear infinite;
+        }
+        
+        /* Video Background */
+        .background-video {
+          position: fixed;
+          top: 50%;
+          left: 50%;
+          min-width: 100%;
+          min-height: 100%;
+          width: auto;
+          height: auto;
+          z-index: -1;
+          transform: translate(-50%, -50%);
+          filter: brightness(25%) blur(1px); /* Darken and blur the video */
+        }
+
+        /* Style for the Contact Form border glow on hover */
+        @keyframes contactFormGlow {
+          from {
+            box-shadow: 0 0 10px rgba(6, 182, 212, 0.2), 0 0 20px rgba(6, 182, 212, 0.1);
+          }
+          to {
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.4), 0 0 40px rgba(6, 182, 212, 0.2);
+          }
+        }
+
+        .contact-form-border-glow:hover {
+          animation: contactFormGlow 1.5s infinite alternate;
+        }
+        
+        /* Input field glow on focus */
+        .input-focus-glow:focus {
+          box-shadow: 0 0 10px rgba(6, 182, 212, 0.6), 0 0 5px rgba(6, 182, 212, 0.4);
+        }
       `}</style>
     </div>
   );
