@@ -392,7 +392,7 @@ const App = () => {
               >
                 {/* Imagem com filtro monocromático para tema terminal */}
                 <img
-                  src="/images/img.jpg"
+                  src="/images/ICONE.png"
                   alt="Gelson do Souto"
                   className="rounded-none w-64 h-64 object-cover mx-auto border-2 border-green-500 filter grayscale contrast-120 hover:filter-none transition-filter duration-500"
                 />
