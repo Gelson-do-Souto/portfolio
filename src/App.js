@@ -505,7 +505,7 @@ const App = () => {
                             >
                                 {/* CORREÇÃO DA IMAGEM APLICADA AQUI */}
                                 <img
-                                    src="/images/ICONE.jpg"
+                                    src="build/images/ICONE.jpg"
                                     alt="Gelson do Souto - Perfil"
                                     className="rounded-none w-64 h-64 object-cover border-2 border-green-500 filter grayscale contrast-120 hover:filter-none transition-filter duration-500"
                                 />
