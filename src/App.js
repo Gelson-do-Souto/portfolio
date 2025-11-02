@@ -175,6 +175,13 @@ const App = () => {
       link: "#",
       imageUrl: "/images/odoo.jpg"
     },
+    {
+      title: "Odoo DevOps Crash Course",
+      issuer: "Udemy",
+      date: "Outubro 31, 2025",
+      link: "ude.my/UC-047c5f07-8b94-45ed-981e-5e5ee4f31702",
+      imageUrl: "/images/Devs.jpg",
+    },
   ];
 
   // Adicione seus projetos aqui
