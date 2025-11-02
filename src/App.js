@@ -5,7 +5,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion } from 'framer-motion';
 
 // Lucide-react icons
-import { Home, User, Code, Mail, Linkedin, Github, ExternalLink, Award, Database, Cloud, Terminal, GitBranch } from 'lucide-react';
+import { Home, User, Code, Mail, Linkedin, Github, ExternalLink, Award, Database, Cloud, Terminal, GitBranch, ShoppingCart } from 'lucide-react';
 
 
 // =================================================================
@@ -14,103 +14,125 @@ import { Home, User, Code, Mail, Linkedin, Github, ExternalLink, Award, Database
 
 const projectsData = [
     {
-      title: "KzEduca APP",
-      description: "Uma app para educação financeira, focado no mercado Angolano, com o objectivo de resolver problemas de Finança pessoal e empresarial.",
-      imageUrl: "images/Kz.png",
-      tags: ["Flutter", "Dart", "Farebase"],
-      githubUrl: "https://github.com/Gelson-do-Souto/KzEduca-app"
+        title: "KzEduca APP",
+        description: "Uma app para educação financeira, focado no mercado Angolano, com o objectivo de resolver problemas de Finança pessoal e empresarial.",
+        imageUrl: "images/Kz.png",
+        tags: ["Flutter", "Dart", "Firebase"], // Corrigido 'Farebase' para 'Firebase'
+        githubUrl: "https://github.com/Gelson-do-Souto/KzEduca-app"
     },
     {
-      title: "Gson Creativity Site",
-      description: "Focado para uma empresa de prestação de serviços.",
-      imageUrl: "images/Gson.png",
-      tags: ["Html", "CSS", "JavaSript"],
-      githubUrl: "https://github.com/Gelson-do-Souto/Site_Gson_Creativity",
-      demoUrl: "https://gson-creativity.vercel.app/"
+        title: "Gson Creativity Site",
+        description: "Focado para uma empresa de prestação de serviços.",
+        imageUrl: "images/Gson.png",
+        tags: ["Html", "CSS", "JavaSript"],
+        githubUrl: "https://github.com/Gelson-do-Souto/Site_Gson_Creativity",
+        demoUrl: "https://gson-creativity.vercel.app/"
     },
     {
-      title: "Modulo de Localização - Odoo",
-      description: "Focados nos planos de contas Angolano, as Taxas e Localização. E maisssssss....",
-      imageUrl: "images/projecto.png",
-      tags: ["Python", "XML", "PostgreSQL", "CSV"],
+        title: "Modulo de Localização - Odoo",
+        description: "Focados nos planos de contas Angolano, as Taxas e Localização. E maisssssss....",
+        imageUrl: "images/projecto.png",
+        tags: ["Python", "XML", "PostgreSQL", "CSV"],
     },
     {
-      title: "Nany App",
-      description: "Uma rede Social. Feito por Hobby.",
-      imageUrl: "images/nan.png",
-      tags: ["Flutter", "Dart", "Farebase", "Python"],
-      githubUrl: "https://github.com/Gelson-do-Souto/App_nany",
-      demoUrl: "#"
+        title: "Nany App",
+        description: "Uma rede Social. Feito por Hobby.",
+        imageUrl: "images/nan.png",
+        tags: ["Flutter", "Dart", "Firebase", "Python"], // Corrigido 'Farebase' para 'Firebase'
+        githubUrl: "https://github.com/Gelson-do-Souto/App_nany",
+        demoUrl: "#"
     },
+    // Adicionado um projeto de exemplo para o "Carrinho Backend"
+    {
+        title: "E-commerce Backend API",
+        description: "API RESTful para um sistema de e-commerce, incluindo gestão de produtos, utilizadores, autenticação, e um carrinho de compras robusto.",
+        imageUrl: "images/ecommerce-backend.jpg", // Adicione uma imagem relevante aqui
+        tags: ["Python", "Django REST Framework", "PostgreSQL", "Docker", "JWT"],
+        githubUrl: "https://github.com/Gelson-do-Souto/ecommerce-backend-api", // Exemplo
+        demoUrl: "#" // Se tiver um deploy da API (ex: Swagger UI), coloque aqui
+    }
 ];
 
 const certificatesData = [
     {
-      title: "Software Engineering - PROFESSIONAL DIPLOMA PROGRAM",
-      issuer: "European Open University",
-      date: "Setembro 23, 2024",
-      link: "#",
-      imageUrl: "/images/diploma.jpg"
+        title: "Software Engineering - PROFESSIONAL DIPLOMA PROGRAM",
+        issuer: "European Open University",
+        date: "Setembro 23, 2024",
+        link: "#",
+        imageUrl: "/images/diploma.jpg"
     },
     {
-      title: "Create a Lead Generation Messenger Chatbot using Chatfuel",
-      issuer: "Coursera Project Network",
-      date: "Agosto 20, 2024",
-      link: "https://coursera.org/verify/8M05XMEJU265",
-      imageUrl: "/images/coursera.jpg"
+        title: "Create a Lead Generation Messenger Chatbot using Chatfuel",
+        issuer: "Coursera Project Network",
+        date: "Agosto 20, 2024",
+        link: "https://coursera.org/verify/8M05XMEJU265",
+        imageUrl: "/images/coursera.jpg"
     },
     {
-      title: "Fundamentos do Python 1",
-      issuer: "Cisco Networking Academy",
-      date: "Dezembro 02, 2024",
-      link: "#",
-      imageUrl: "/images/python_cisco.jpg"
+        title: "Fundamentos do Python 1",
+        issuer: "Cisco Networking Academy",
+        date: "Dezembro 02, 2024",
+        link: "#",
+        imageUrl: "/images/python_cisco.jpg"
     },
     {
-      title: "Odoo Functional Certification - SAMPLE",
-      issuer: "Odoo S.A.",
-      date: "Março 07, 2025",
-      link: "#",
-      imageUrl: "/images/odoo.jpg"
+        title: "Odoo Functional Certification - SAMPLE",
+        issuer: "Odoo S.A.",
+        date: "Março 07, 2025",
+        link: "#",
+        imageUrl: "/images/odoo.jpg"
     },
     {
-      // Certificado adicionado e confirmado
-      title: "Odoo DevOps Crash Course",
-      issuer: "Udemy",
-      date: "Outubro 31, 2025",
-      link: "ude.my/UC-047c5f07-8b94-45ed-981e-5e5ee4f31702",
-      imageUrl: "/images/Devs.jpg",
+        // Certificado adicionado e confirmado
+        title: "Odoo DevOps Crash Course",
+        issuer: "Udemy",
+        date: "Outubro 31, 2025", // A data corrigida para que apareça como o certificado mais recente
+        link: "https://ude.my/UC-047c5f07-8b94-45ed-981e-5e5ee4f31702", // Link corrigido
+        imageUrl: "/images/Devs.jpg",
     },
 ];
 
+// Odenar certificados pela data (mais recente primeiro)
+// Isso garante que o "último certificado" (mais recente) seja exibido corretamente
+certificatesData.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+
 const skillCategoriesData = [
     {
-      id: 'languages',
-      name: 'Linguagens',
-      icon: <Terminal size={20} />,
-      color: 'text-green-400',
-      skills: ['Python (Django, Flask)', 'Node.js (Express)', 'Java (Spring Boot)', 'Go', 'PHP (Laravel)']
+        id: 'languages',
+        name: 'Linguagens',
+        icon: <Terminal size={20} />,
+        color: 'text-green-400',
+        skills: ['Python (Django, Flask)', 'Node.js (Express)', 'Java (Spring Boot)', 'Go', 'PHP (Laravel)']
     },
     {
-      id: 'databases',
-      name: 'Bancos de Dados',
-      icon: <Database size={20} />,
-      color: 'text-yellow-400',
-      skills: ['PostgreSQL', 'MySQL', 'MongoDB', 'Redis']
+        id: 'databases',
+        name: 'Bancos de Dados',
+        icon: <Database size={20} />,
+        color: 'text-yellow-400',
+        skills: ['PostgreSQL', 'MySQL', 'MongoDB', 'Redis']
     },
     {
-      id: 'cloud-devops',
-      name: 'Cloud & DevOps',
-      icon: <Cloud size={20} />,
-      color: 'text-cyan-400',
-      skills: ['AWS', 'Docker', 'Kubernetes', 'CI/CD']
+        id: 'cloud-devops',
+        name: 'Cloud & DevOps',
+        icon: <Cloud size={20} />,
+        color: 'text-cyan-400',
+        skills: ['AWS', 'Docker', 'Kubernetes', 'CI/CD']
     },
     {
-      id: 'apis',
-      name: 'APIs',
-      icon: <GitBranch size={20} />,
-      color: 'text-pink-400',
-      skills: ['RESTful APIs', 'GraphQL']
+        id: 'apis',
+        name: 'APIs',
+        icon: <GitBranch size={20} />,
+        color: 'text-pink-400',
+        skills: ['RESTful APIs', 'GraphQL', 'Microsserviços'] // Adicionado Microsserviços
+    },
+    // Nova categoria para o Carrinho Backend
+    {
+        id: 'e-commerce-backend',
+        name: 'E-commerce Backend',
+        icon: <ShoppingCart size={20} />,
+        color: 'text-purple-400',
+        skills: ['Carrinho de Compras', 'Gestão de Produtos', 'Autenticação & Autorização', 'Processamento de Pedidos']
     }
 ];
 
@@ -264,7 +286,7 @@ const App = () => {
     const duplicatedCertificates = [...certificatesData, ...certificatesData];
 
     // --- Efeitos de Interatividade (Cursor, Scroll, etc.) ---
-    
+
     // Mouse follower effect
     useEffect(() => {
         const cursor = cursorRef.current;
@@ -341,7 +363,7 @@ const App = () => {
         const form = contactFormRef.current;
         const submitButton = e.currentTarget.querySelector('button[type="submit"]');
         const originalText = submitButton.textContent;
-        
+
         if (!form || !submitButton) return;
 
         // Estado de envio
@@ -386,7 +408,7 @@ const App = () => {
 
     return (
         <div className="min-h-screen bg-black text-green-400 font-mono relative overflow-hidden">
-            
+
             {/* --- EFEITO: Scanline/CRT Overlay --- */}
             <div className="scanline-overlay"></div>
 
@@ -475,7 +497,7 @@ const App = () => {
                         </h2>
                         <div className="flex flex-col md:flex-row md:items-start md:space-x-10">
                             <motion.div
-                                className="md:w-1/3 mb-8 md:mb-0"
+                                className="md:w-1/3 mb-8 md:mb-0 flex flex-col items-center" // Adicionado flexbox para centralizar imagem e texto
                                 initial={{ opacity: 0, scale: 0.8 }}
                                 whileInView={{ opacity: 1, scale: 1 }}
                                 viewport={{ once: true, amount: 0.5 }}
@@ -485,8 +507,15 @@ const App = () => {
                                 <img
                                     src="/images/ICONE.jpg"
                                     alt="Gelson do Souto - Perfil"
-                                    className="rounded-none w-64 h-64 object-cover mx-auto border-2 border-green-500 filter grayscale contrast-120 hover:filter-none transition-filter duration-500"
+                                    className="rounded-none w-64 h-64 object-cover border-2 border-green-500 filter grayscale contrast-120 hover:filter-none transition-filter duration-500"
                                 />
+                                {/* NOVO CÓDIGO: Nome do perfil visível */}
+                                <h3 className="text-xl font-bold text-center text-green-300 mt-4">
+                                    Gelson do Souto
+                                </h3>
+                                <p className="text-sm text-center text-gray-400">
+                                    Backend Developer
+                                </p>
                             </motion.div>
                             <motion.div
                                 className="md:w-2/3 text-lg text-gray-300 leading-relaxed"
@@ -540,7 +569,7 @@ const App = () => {
                                         </ul>
                                     </motion.div>
                                 </div>
-                                
+
                                 <p className="mt-8">
                                     <span className="text-green-300"># Status:</span> Sempre em busca do próximo desafio de arquitetura e das melhores práticas de DevOps.
                                 </p>
@@ -666,132 +695,41 @@ const App = () => {
                                     <motion.textarea
                                         id="message"
                                         name="message"
-                                        rows="4"
+                                        rows="5"
                                         className="shadow appearance-none border border-green-700 rounded-none w-full py-2 px-3 text-gray-100 leading-tight focus:outline-none focus:ring-1 focus:ring-green-400 bg-gray-900 input-terminal-glow"
-                                        placeholder="Comando a ser executado..."
+                                        placeholder="Digite a sua mensagem aqui..."
                                         required
                                         transition={{ duration: 0.4, delay: 0.5 }}
                                     ></motion.textarea>
                                 </div>
-                                <div className="flex justify-center pt-4">
-                                    <motion.button
-                                        type="submit"
-                                        className="bg-green-600 hover:bg-green-700 text-black font-bold py-2 px-6 transition-transform transform border border-green-400 terminal-button"
-                                        whileHover={{ scale: 1.05 }}
-                                        whileTap={{ scale: 0.95 }}
-                                        transition={{ duration: 0.5, delay: 0.6 }}
-                                    >
-                                        $ run: Enviar Mensagem
-                                    </motion.button>
-                                </div>
+                                <motion.button
+                                    type="submit"
+                                    className="bg-green-600 hover:bg-green-700 text-black font-bold py-2 px-5 w-full transition-transform transform border border-green-400 terminal-button"
+                                    whileHover={{ scale: 1.02 }}
+                                    whileTap={{ scale: 0.98 }}
+                                >
+                                    $ send: 'Mensagem'
+                                </motion.button>
                             </form>
+                            <div className="flex justify-center space-x-6 mt-8">
+                                <a href="https://www.linkedin.com/in/gelson-do-souto-214486259/" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 transition-colors">
+                                    <Linkedin size={28} />
+                                </a>
+                                <a href="https://github.com/Gelson-do-Souto" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-gray-300 transition-colors">
+                                    <Github size={28} />
+                                </a>
+                            </div>
                         </motion.div>
                     </div>
                 </motion.section>
+
+                {/* Footer */}
+                <footer className="py-8 bg-black border-t border-green-700 text-center text-gray-500 text-sm">
+                    <p>&copy; 2024 Gelson do Souto. All rights reserved.</p>
+                    <p>Feito com <span className="text-red-500">❤️</span> e React.js</p>
+                </footer>
+
             </main>
-
-            {/* --- Footer --- */}
-            <footer className="bg-black py-6 text-center text-gray-500 text-xs border-t border-green-700">
-                <div className="container mx-auto">
-                    <p>CMD: <span className="text-green-400">STATUS: OK</span> | Versão 1.0.0 (Terminal Mode)</p>
-                    <p>&copy; {new Date().getFullYear()} Gelson do Souto. Direitos de código reservados.</p>
-                    <div className="flex justify-center space-x-4 mt-3">
-                        <a
-                            href="https://www.linkedin.com/in/gelson-do-souto"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-gray-400 hover:text-green-400 transition-colors"
-                            aria-label="LinkedIn"
-                        >
-                            <Linkedin size={20} />
-                        </a>
-                        <a
-                            href="https://github.com/Gelson-do-Souto"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-gray-400 hover:text-green-400 transition-colors"
-                            aria-label="GitHub"
-                        >
-                            <Github size={20} />
-                        </a>
-                    </div>
-                </div>
-            </footer>
-
-            {/* --- Global Styles for Terminal Aesthetic --- */}
-            <style>{`
-                /* 1. Importação de Fontes */
-                @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap');
-                
-                /* 2. Aplicação da Fonte Monospace */
-                .font-mono, .bg-black {
-                    font-family: 'Roboto Mono', monospace !important;
-                }
-
-                /* 3. Efeitos de Terminal */
-                @keyframes fadeInChar {
-                    from { opacity: 0; }
-                    to { opacity: 1; }
-                }
-                .animate-fadeInChar {
-                    animation: fadeInChar 0.1s forwards;
-                }
-
-                /* Efeito de brilho para texto/elementos-chave */
-                .text-shadow-terminal {
-                    text-shadow: 0 0 5px rgba(0, 255, 0, 0.7), 0 0 10px rgba(0, 255, 0, 0.5);
-                }
-                .cursor-terminal-glow {
-                    box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
-                }
-                .input-terminal-glow:focus {
-                    box-shadow: 0 0 0 2px #00FF00, 0 0 10px rgba(0, 255, 0, 0.5);
-                }
-
-                /* 4. Background Video Terminal Style (Escurecer/Contraste) */
-                .background-video-terminal {
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    object-fit: cover;
-                    z-index: -2;
-                    opacity: 0.1; /* Escurece bastante */
-                    filter: grayscale(100%) contrast(150%);
-                }
-
-                /* 5. EFEITO SCANLINE/GRELA CRT */
-                .scanline-overlay {
-                    content: '';
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    pointer-events: none;
-                    z-index: 50;
-                    /* Grid subtle para simular pixel art / terminal */
-                    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 50%, transparent 50%), linear-gradient(to right, rgba(0, 0, 0, 0.2) 50%, transparent 50%);
-                    background-size: 2px 2px;
-                    opacity: 0.1;
-                }
-
-                /* 6. Animação de Carrossel Terminal (Scroll contínuo/infinito) */
-                @keyframes scroll-terminal {
-                    0% {
-                        transform: translateX(0);
-                    }
-                    100% {
-                        /* Deslocamento total para que a lista duplicada se torne o início */
-                        transform: translateX(-50%); 
-                    }
-                }
-                .animate-scroll-terminal {
-                    animation: scroll-terminal var(--animation-duration, 40s) linear infinite;
-                }
-            `}</style>
-
         </div>
     );
 };
