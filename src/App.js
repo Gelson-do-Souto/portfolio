@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion } from 'framer-motion';
 
-// Lucide-react icons for a modern look
+// Lucide-react icons for a modern look (mantidos, mas estilizados para o tema)
 import { Home, User, Code, Mail, Linkedin, Github, ExternalLink, Award, Database, Cloud, Terminal, GitBranch } from 'lucide-react';
 
 // Helper component for letter-by-letter animation
@@ -28,7 +28,7 @@ const App = () => {
   const cursorRef = useRef(null);
   const contactFormRef = useRef(null);
 
-  // Mouse follower effect (inspired by hamzanaseem.vercel.app)
+  // --- 1. Mouse follower effect (Ajustado para o tema Terminal) ---
   useEffect(() => {
     const cursor = cursorRef.current;
     if (!cursor) return;
@@ -96,29 +96,53 @@ const App = () => {
     };
   }, []);
 
-  // Contact form submission handler (agora apenas para feedback visual)
-  const handleContactSubmit = (e) => {
-    // Mantém o comportamento nativo de envio do formulário, mas adiciona feedback
+  // --- 2. Contact form submission handler (Corrigido para usar fetch/Formspree de forma estável) ---
+  const handleContactSubmit = async (e) => {
+    e.preventDefault(); 
+    const form = contactFormRef.current;
     const submitButton = e.currentTarget.querySelector('button[type="submit"]');
-    if (submitButton) {
-      submitButton.textContent = 'Enviando...';
+    const originalText = submitButton.textContent;
+    
+    if (!form || !submitButton) return;
+
+    // Estado de envio
+    submitButton.textContent = 'A Enviar...';
+    submitButton.disabled = true;
+    submitButton.classList.remove('bg-cyan-600', 'hover:bg-cyan-700');
+    submitButton.classList.add('bg-gray-600', 'cursor-not-allowed');
+
+    try {
+      const response = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: {
+          'Accept': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        submitButton.textContent = 'Enviado! ✅';
+        submitButton.classList.remove('bg-gray-600');
+        submitButton.classList.add('bg-green-600');
+        form.reset();
+      } else {
+        submitButton.textContent = 'Falha! ❌';
+        submitButton.classList.remove('bg-gray-600');
+        submitButton.classList.add('bg-red-600');
+      }
+    } catch (error) {
+      submitButton.textContent = 'Erro de Rede! 📶';
+      submitButton.classList.remove('bg-gray-600');
+      submitButton.classList.add('bg-red-600');
     }
 
-    // Este timeout simula o tempo de resposta do servidor
+    // Volta ao estado original após 3 segundos
     setTimeout(() => {
-      if (submitButton) {
-        submitButton.textContent = 'Enviado!';
-        submitButton.classList.add('bg-green-600');
-        
-        setTimeout(() => {
-          submitButton.textContent = 'Enviar Mensagem';
-          submitButton.classList.remove('bg-green-600');
-          if (contactFormRef.current) {
-            contactFormRef.current.reset();
-          }
-        }, 2000);
-      }
-    }, 1000);
+      submitButton.textContent = originalText;
+      submitButton.disabled = false;
+      submitButton.classList.remove('bg-green-600', 'bg-red-600', 'bg-gray-600', 'cursor-not-allowed');
+      submitButton.classList.add('bg-cyan-600', 'hover:bg-cyan-700');
+    }, 3000);
   };
     
   // Array de Certificados
@@ -128,28 +152,28 @@ const App = () => {
       issuer: "European Open University",
       date: "Setembro 23, 2024",
       link: "#",
-      imageUrl: "/images/diploma.jpg" // Adicione a imagem do seu diploma
+      imageUrl: "/images/diploma.jpg"
     },
     {
       title: "Create a Lead Generation Messenger Chatbot using Chatfuel",
       issuer: "Coursera Project Network",
       date: "Agosto 20, 2024",
       link: "https://coursera.org/verify/8M05XMEJU265",
-      imageUrl: "/images/coursera.jpg" // Adicione a imagem do seu certificado da Coursera
+      imageUrl: "/images/coursera.jpg"
     },
     {
       title: "Fundamentos do Python 1",
       issuer: "Cisco Networking Academy",
       date: "Dezembro 02, 2024",
       link: "#",
-      imageUrl: "/images/python_cisco.jpg" // Adicione a imagem do seu certificado da Cisco
+      imageUrl: "/images/python_cisco.jpg"
     },
     {
       title: "Odoo Functional Certification - SAMPLE",
       issuer: "Odoo S.A.",
-      date: "Março 07, 2025", // Data de Conclusão do certificado da Odoo
-      link: "#", // URL não disponível nos arquivos
-      imageUrl: "/images/odoo.jpg" // Adicione a imagem do seu certificado da Odoo
+      date: "Março 07, 2025",
+      link: "#",
+      imageUrl: "/images/odoo.jpg"
     },
   ];
 
@@ -195,7 +219,7 @@ const App = () => {
       id: 'languages',
       name: 'Linguagens',
       icon: <Terminal size={20} />,
-      color: 'text-green-400',
+      color: 'text-green-400', // Mudei para green para mais "terminal"
       skills: [
         'Python (Django, Flask)',
         'Node.js (Express)',
@@ -208,7 +232,7 @@ const App = () => {
       id: 'databases',
       name: 'Bancos de Dados',
       icon: <Database size={20} />,
-      color: 'text-purple-400',
+      color: 'text-yellow-400',
       skills: [
         'PostgreSQL',
         'MySQL',
@@ -220,7 +244,7 @@ const App = () => {
       id: 'cloud-devops',
       name: 'Cloud & DevOps',
       icon: <Cloud size={20} />,
-      color: 'text-blue-400',
+      color: 'text-cyan-400',
       skills: [
         'AWS',
         'Docker',
@@ -232,7 +256,7 @@ const App = () => {
       id: 'apis',
       name: 'APIs',
       icon: <GitBranch size={20} />,
-      color: 'text-yellow-400',
+      color: 'text-pink-400',
       skills: [
         'RESTful APIs',
         'GraphQL'
@@ -241,127 +265,105 @@ const App = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-950 to-gray-800 text-gray-100 font-inter relative overflow-hidden">
-      {/* Background Video */}
+    // Aplicamos a fonte mono a toda a aplicação e cores de terminal
+    <div className="min-h-screen bg-black text-green-400 font-mono relative overflow-hidden">
+      
+      {/* --- EFEITO: Scanline/CRT Overlay --- */}
+      <div className="scanline-overlay"></div>
+
+      {/* Background Video (mantido, mas estilizado para ser mais escuro) */}
       <video
         autoPlay
         loop
         muted
         playsInline
-        className="background-video"
+        className="background-video-terminal" // Nova classe para escurecer o vídeo
       >
         <source src="/images/video.mp4" type="video/mp4" />
         Seu navegador não suporta vídeos.
       </video>
 
-      {/* Custom Mouse Follower */}
+      {/* Custom Mouse Follower (ajustado para um "cursor" mais simples) */}
       <div
         ref={cursorRef}
-        className="pointer-events-none fixed z-50 -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-400 opacity-0 transition-all duration-100 ease-out mix-blend-screen shadow-glow"
-        style={{ width: '25px', height: '25px', filter: 'blur(12px)' }}
+        className="pointer-events-none fixed z-50 -translate-x-1/2 -translate-y-1/2 rounded-sm bg-green-400 opacity-0 transition-all duration-150 ease-out mix-blend-screen shadow-green-400/80 cursor-terminal-glow"
+        style={{ width: '8px', height: '8px', filter: 'blur(1px)', transitionDuration: '150ms' }}
       ></div>
 
-      {/* Navigation Bar */}
-      <nav className="fixed top-0 left-0 right-0 z-40 bg-gray-900 bg-opacity-90 backdrop-blur-sm p-4 shadow-2xl border-b border-cyan-700">
+      {/* Navigation Bar - Mais terminal/sólida */}
+      <nav className="fixed top-0 left-0 right-0 z-40 bg-black bg-opacity-90 backdrop-blur-sm p-4 border-b border-green-600 shadow-xl shadow-green-900/50">
         <div className="container mx-auto flex justify-between items-center">
-          <div className="text-2xl font-bold text-cyan-400 font-mono tracking-wide">Gelson do Souto</div>
-          <ul className="flex space-x-4 sm:space-x-6">
-            <li>
-              <button
-                onClick={() => scrollToSection('home')}
-                className={`flex items-center space-x-2 p-2 rounded-lg transition-all duration-300 transform hover:scale-105 ${
-                  activeSection === 'home' ? 'text-cyan-400 bg-gray-700 shadow-lg border border-cyan-600' : 'text-gray-300 hover:text-cyan-300 hover:bg-gray-700'
-                }`}
-              >
-                <Home size={20} />
-                <span className="hidden sm:inline">Início</span>
-              </button>
-            </li>
-            <li>
-              <button
-                onClick={() => scrollToSection('about')}
-                className={`flex items-center space-x-2 p-2 rounded-lg transition-all duration-300 transform hover:scale-105 ${
-                  activeSection === 'about' ? 'text-cyan-400 bg-gray-700 shadow-lg border border-cyan-600' : 'text-gray-300 hover:text-cyan-300 hover:bg-gray-700'
-                }`}
-              >
-                <User size={20} />
-                <span className="hidden sm:inline">Sobre Mim</span>
-              </button>
-            </li>
-            <li>
-              <button
-                onClick={() => scrollToSection('projects')}
-                className={`flex items-center space-x-2 p-2 rounded-lg transition-all duration-300 transform hover:scale-105 ${
-                  activeSection === 'projects' ? 'text-cyan-400 bg-gray-700 shadow-lg border border-cyan-600' : 'text-gray-300 hover:text-cyan-300 hover:bg-gray-700'
-                }`}
-              >
-                <Code size={20} />
-                <span className="hidden sm:inline">Projetos</span>
-              </button>
-            </li>
-            <li>
-              <button
-                onClick={() => scrollToSection('certificates')}
-                className={`flex items-center space-x-2 p-2 rounded-lg transition-all duration-300 transform hover:scale-105 ${
-                  activeSection === 'certificates' ? 'text-cyan-400 bg-gray-700 shadow-lg border border-cyan-600' : 'text-gray-300 hover:text-cyan-300 hover:bg-gray-700'
-                }`}
-              >
-                <Award size={20} />
-                <span className="hidden sm:inline">Certificados</span>
-              </button>
-            </li>
-            <li>
-              <button
-                onClick={() => scrollToSection('contact')}
-                className={`flex items-center space-x-2 p-2 rounded-lg transition-all duration-300 transform hover:scale-105 ${
-                  activeSection === 'contact' ? 'text-cyan-400 bg-gray-700 shadow-lg border border-cyan-600' : 'text-gray-300 hover:text-cyan-300 hover:bg-gray-700'
-                }`}
-              >
-                <Mail size={20} />
-                <span className="hidden sm:inline">Contato</span>
-              </button>
-            </li>
+          <div className="text-2xl font-bold text-green-400 tracking-wider">
+            $ Gelson <span className="text-gray-500">_</span>
+          </div>
+          <ul className="flex space-x-2 sm:space-x-4">
+            {/* Componente de navegação mais simples e sólido */}
+            {['home', 'about', 'projects', 'certificates', 'contact'].map(id => (
+              <li key={id}>
+                <button
+                  onClick={() => scrollToSection(id)}
+                  className={`flex items-center space-x-1 p-2 rounded-none transition-all duration-150 border-b-2 
+                    ${activeSection === id 
+                      ? 'text-green-400 border-green-400 bg-gray-900/50' 
+                      : 'text-gray-400 border-transparent hover:text-green-300 hover:border-green-600'
+                    }`}
+                >
+                  {id === 'home' && <Home size={18} />}
+                  {id === 'about' && <User size={18} />}
+                  {id === 'projects' && <Code size={18} />}
+                  {id === 'certificates' && <Award size={18} />}
+                  {id === 'contact' && <Mail size={18} />}
+                  <span className="hidden md:inline capitalize">{id === 'home' ? 'Início' : id === 'about' ? 'Sobre' : id === 'projects' ? 'Projetos' : id === 'certificates' ? 'Certificados' : 'Contato'}</span>
+                </button>
+              </li>
+            ))}
           </ul>
         </div>
       </nav>
 
       <main className="pt-20"> {/* Padding top to account for fixed nav */}
+        
         {/* Home Section */}
         <motion.section
           id="home"
-          className="h-screen flex items-center justify-center text-center p-4"
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          className="h-screen flex items-center justify-center text-center p-4 relative"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
           viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.9, ease: "easeOut" }}
+          transition={{ duration: 1.5 }} // Transição mais lenta para simular a carga
         >
-          <div className="max-w-3xl">
-            <h1 className="text-5xl md:text-7xl font-extrabold text-white leading-tight mb-4">
-              Olá, eu sou <span className="text-cyan-400 text-shadow-neon">
-                <AnimatedText text="Gelson do Souto" delay={70} />
-              </span>
-            </h1>
-            <p className="text-xl md:text-2xl text-gray-300 mb-8 font-mono">
-              <span className="font-semibold text-cyan-300">&gt;</span> Um <span className="font-semibold text-cyan-300">Desenvolvedor Backend</span> apaixonado por construir soluções robustas e escaláveis.
+          <div className="max-w-4xl border-2 border-green-600 p-8 bg-black/50 backdrop-blur-sm shadow-xl shadow-green-900/30">
+            <p className="text-sm text-green-500 mb-2">
+              <span className="text-pink-400">root@portifolio</span>:<span className="text-cyan-400">/home/backend-dev</span>$
             </p>
-            <div className="flex justify-center space-x-4">
+            <h1 className="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-4">
+              <span className="text-green-400 text-shadow-terminal">
+                <AnimatedText text="[SYSTEM_ONLINE]" delay={70} />
+              </span>
+              <br/>
+              A Developer Backend is here
+            </h1>
+            <p className="text-lg md:text-xl text-gray-300 mb-8 font-mono">
+              <span className="font-semibold text-green-300">$ Welcome!</span> Construindo infraestruturas robustas desde 20XX.
+            </p>
+            <div className="flex justify-center space-x-6">
               <motion.a
                 href="#projects"
                 onClick={() => scrollToSection('projects')}
-                className="bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-3 px-6 rounded-full transition-transform transform hover:scale-105 shadow-lg shadow-cyan-500/50 button-glow"
+                className="bg-green-600 hover:bg-green-700 text-black font-bold py-2 px-5 transition-transform transform border border-green-400 terminal-button"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                Ver Projetos
+                $ execute: 'Projetos'
               </motion.a>
               <motion.a
                 href="#contact"
                 onClick={() => scrollToSection('contact')}
-                className="border border-cyan-600 text-cyan-400 hover:bg-cyan-600 hover:text-white font-bold py-3 px-6 rounded-full transition-transform transform hover:scale-105 shadow-lg shadow-cyan-500/30 button-glow"
+                className="border border-green-600 text-green-400 hover:bg-green-700 hover:text-black font-bold py-2 px-5 transition-transform transform terminal-button"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                Entrar em Contato
+                $ call: 'Contato'
               </motion.a>
             </div>
           </div>
@@ -370,15 +372,15 @@ const App = () => {
         {/* About Section */}
         <motion.section
           id="about"
-          className="py-20 bg-gray-900 p-4 border-t border-b border-gray-700"
+          className="py-20 bg-gray-950 p-4 border-t border-b border-green-700"
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
+          transition={{ duration: 0.8 }}
         >
-          <div className="container mx-auto max-w-4xl">
-            <h2 className="text-4xl font-bold text-center text-cyan-400 mb-12">
-              <AnimatedText text="Sobre Mim" delay={70} />
+          <div className="container mx-auto max-w-4xl border-2 border-green-600 p-8 bg-black/70">
+            <h2 className="text-3xl font-bold text-center text-green-400 mb-10">
+              <span className="text-cyan-400">&gt;</span> Sobre Mim <span className="text-cyan-400">&lt;</span>
             </h2>
             <div className="flex flex-col md:flex-row md:items-start md:space-x-10">
               <motion.div
@@ -386,42 +388,40 @@ const App = () => {
                 initial={{ opacity: 0, scale: 0.8 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true, amount: 0.5 }}
-                transition={{ duration: 0.7, ease: "easeOut", delay: 0.2 }}
+                transition={{ duration: 0.7, delay: 0.2 }}
               >
+                {/* Imagem com filtro monocromático para tema terminal */}
                 <img
                   src="/images/img.jpg"
                   alt="Gelson do Souto"
-                  className="rounded-full w-64 h-64 object-cover mx-auto shadow-xl border-4 border-cyan-500 animate-pulse-border"
+                  className="rounded-none w-64 h-64 object-cover mx-auto border-2 border-green-500 filter grayscale contrast-120 hover:filter-none transition-filter duration-500"
                 />
               </motion.div>
               <motion.div
-                className="md:w-2/3 text-lg text-gray-300 leading-relaxed font-mono"
+                className="md:w-2/3 text-lg text-gray-300 leading-relaxed"
                 initial={{ opacity: 0, x: 50 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, amount: 0.5 }}
-                transition={{ duration: 0.7, ease: "easeOut", delay: 0.3 }}
+                transition={{ duration: 0.7, delay: 0.3 }}
               >
                 <p className="mb-4">
-                  <span className="text-cyan-300">&gt;</span> Sou um desenvolvedor backend com 3 anos de experiência na criação e manutenção de sistemas robustos e de alta performance. Minha paixão reside em resolver problemas complexos e otimizar processos para garantir a escalabilidade e a segurança das aplicações.
-                </p>
-                <p className="mb-4">
-                  <span className="text-cyan-300">&gt;</span> Possuo proficiência nas principais linguagens e frameworks da área, incluindo:
+                  <span className="text-green-300"># Perfil:</span> Sou um desenvolvedor backend com 3 anos de experiência em sistemas robustos e escaláveis. Minha paixão é otimizar performance e garantir a segurança dos dados.
                 </p>
 
                 {/* Skills/Habilidades Section - Tabbed Interface */}
                 <div className="mt-8">
-                  <div className="flex flex-wrap justify-center gap-4 mb-6">
+                  <div className="flex flex-wrap justify-center gap-2 mb-6 border-b border-green-700 pb-2">
                     {skillCategories.map((category) => (
                       <motion.button
                         key={category.id}
                         onClick={() => setActiveSkillCategory(category.id)}
-                        className={`flex items-center space-x-2 px-5 py-2 rounded-full font-bold text-sm transition-all duration-300 transform hover:scale-105 button-glow ${
-                          activeSkillCategory === category.id
-                            ? `bg-cyan-600 text-white shadow-lg border border-cyan-600 ${category.color}`
-                            : 'bg-gray-700 text-gray-300 hover:bg-gray-600 hover:text-cyan-300 border border-gray-700'
-                        }`}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
+                        className={`flex items-center space-x-1 px-4 py-1 rounded-none font-bold text-sm border-2 transition-all duration-150 
+                          ${activeSkillCategory === category.id
+                            ? `bg-green-600 text-black border-green-400 ${category.color} shadow-lg shadow-green-700/50`
+                            : 'bg-black text-gray-400 border-green-900 hover:text-green-400 hover:border-green-600'
+                          }`}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
                       >
                         {category.icon}
                         <span>{category.name}</span>
@@ -430,88 +430,88 @@ const App = () => {
                   </div>
 
                   <motion.div
-                    className="bg-gray-800 p-6 rounded-lg shadow-inner shadow-cyan-500/10 border border-gray-700"
+                    className="bg-black p-5 rounded-none border-2 border-green-800 shadow-inner shadow-green-900/20"
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, amount: 0.5 }}
-                    transition={{ duration: 0.6, ease: "easeOut", delay: 0.4 }}
+                    transition={{ duration: 0.6, delay: 0.4 }}
                   >
-                    <h3 className="text-xl font-semibold text-cyan-300 mb-4 text-shadow-neon">
-                      {skillCategories.find(cat => cat.id === activeSkillCategory)?.name}
+                    <h3 className="text-lg font-semibold text-green-400 mb-3">
+                      $ {skillCategories.find(cat => cat.id === activeSkillCategory)?.name} <span className="animate-pulse">_</span>
                     </h3>
-                    <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-gray-300">
+                    <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-gray-300">
                       {skillCategories.find(cat => cat.id === activeSkillCategory)?.skills.map((skill, idx) => (
-                        <li key={idx} className="flex items-center space-x-2">
-                          <span className="text-cyan-400">&gt;</span>
+                        <li key={idx} className="flex items-center space-x-2 text-sm">
+                          <span className="text-green-400">$</span>
                           <span>{skill}</span>
                         </li>
                       ))}
                     </ul>
                   </motion.div>
                 </div>
-                {/* End Skills/Habilidades Section */}
-
+                
                 <p className="mt-8">
-                  <span className="text-cyan-300">&gt;</span> Estou sempre em busca de novos desafios e oportunidades para aprender e aplicar as melhores práticas de desenvolvimento.
+                  <span className="text-green-300"># Status:</span> Sempre em busca do próximo desafio de arquitetura e das melhores práticas de DevOps.
                 </p>
               </motion.div>
             </div>
           </div>
         </motion.section>
 
-        {/* Projects Section with Carousel */}
+        {/* Projects Section with Carousel - Ajuste para estética terminal */}
         <motion.section
           id="projects"
-          className="py-20 bg-gray-950 p-4 border-t border-b border-gray-700"
+          className="py-20 bg-black p-4 border-t border-b border-green-700"
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
+          transition={{ duration: 0.8 }}
         >
           <div className="container mx-auto max-w-5xl">
-            <h2 className="text-4xl font-bold text-center text-cyan-400 mb-12">
-              <AnimatedText text="Meus Projetos" delay={70} />
+            <h2 className="text-3xl font-bold text-center text-green-400 mb-10">
+              $ cat /Projects/List <span className="animate-pulse">_</span>
             </h2>
-            <div className="relative w-full overflow-hidden">
+            <div className="relative w-full overflow-hidden border-2 border-green-600 p-4 bg-gray-900/50">
+              {/* Ajuste de animação para ser menos suave e mais "digital" */}
               <div
-                className="flex space-x-8 animate-scroll"
-                style={{ animationDuration: `${projects.length * 8}s` }}
+                className="flex space-x-8 animate-scroll-terminal" // Nova classe de animação
+                style={{ animationDuration: `${projects.length * 5}s` }} // Velocidade ajustada
               >
                 {duplicatedProjects.map((project, index) => (
                   <motion.div
                     key={index}
-                    className="flex-shrink-0 w-80 bg-gray-800 rounded-lg shadow-xl shadow-purple-500/20 overflow-hidden transform hover:scale-105 transition-transform duration-300 border border-purple-700 project-card-hover"
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
+                    className="flex-shrink-0 w-80 bg-black/80 rounded-none border border-green-700 overflow-hidden transform hover:scale-[1.01] transition-transform duration-150 shadow-lg shadow-green-900/50"
+                    initial={{ opacity: 0, x: 20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true, amount: 0.2 }}
-                    transition={{ duration: 0.6, ease: "easeOut", delay: index * 0.05 }}
+                    transition={{ duration: 0.5, delay: index * 0.05 }}
                   >
                     <img
                       src={project.imageUrl}
                       alt={project.title}
-                      className="w-full h-48 object-cover border-b border-gray-700"
+                      className="w-full h-40 object-cover border-b border-green-700 filter grayscale-80 contrast-150"
                     />
-                    <div className="p-6">
-                      <h3 className="text-2xl font-semibold text-purple-300 mb-2 font-mono">{project.title}</h3>
-                      <p className="text-gray-400 mb-4 text-sm">{project.description}</p>
+                    <div className="p-4">
+                      <h3 className="text-xl font-semibold text-green-300 mb-2">{project.title}</h3>
+                      <p className="text-gray-400 mb-3 text-sm">{project.description}</p>
                       <div className="flex flex-wrap gap-2 mb-4">
                         {project.tags.map((tag, tagIndex) => (
-                          <span key={tagIndex} className="bg-gray-700 text-gray-300 text-xs px-3 py-1 rounded-full border border-gray-600 tag-glow">
+                          <span key={tagIndex} className="bg-green-900 text-green-300 text-xs px-2 py-0.5 rounded-none border border-green-700">
                             {tag}
                           </span>
                         ))}
                       </div>
                       <div className="flex justify-end space-x-3">
                         {project.githubUrl && (
-                          <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300 transition-colors flex items-center space-x-1 hover:underline">
-                            <Github size={20} />
-                            <span className="font-mono">GitHub</span>
+                          <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="text-cyan-400 hover:text-cyan-300 transition-colors flex items-center space-x-1 text-sm">
+                            <Github size={16} />
+                            <span>Código</span>
                           </a>
                         )}
                         {project.demoUrl && project.demoUrl !== "#" && (
-                          <a href={project.demoUrl} target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300 transition-colors flex items-center space-x-1 hover:underline">
-                            <ExternalLink size={20} />
-                            <span className="font-mono">Demo</span>
+                          <a href={project.demoUrl} target="_blank" rel="noopener noreferrer" className="text-cyan-400 hover:text-cyan-300 transition-colors flex items-center space-x-1 text-sm">
+                            <ExternalLink size={16} />
+                            <span>Deploy</span>
                           </a>
                         )}
                       </div>
@@ -526,45 +526,44 @@ const App = () => {
         {/* Certificates Section with Carousel */}
         <motion.section
           id="certificates"
-          className="py-20 bg-gray-900 p-4 border-t border-b border-gray-700"
+          className="py-20 bg-gray-950 p-4 border-t border-b border-green-700"
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
+          transition={{ duration: 0.8 }}
         >
           <div className="container mx-auto max-w-4xl">
-            <h2 className="text-4xl font-bold text-center text-purple-400 mb-12">
-              <AnimatedText text="Meus Certificados" delay={70} />
+            <h2 className="text-3xl font-bold text-center text-green-400 mb-10">
+              $ ls /Certificates <span className="animate-pulse">_</span>
             </h2>
-            <div className="relative w-full overflow-hidden">
+            <div className="relative w-full overflow-hidden border-2 border-green-600 p-4 bg-black/70">
               <div
-                className="flex space-x-8 animate-scroll"
-                style={{ animationDuration: `${certificates.length * 8}s` }}
+                className="flex space-x-8 animate-scroll-terminal"
+                style={{ animationDuration: `${certificates.length * 6}s` }}
               >
                 {duplicatedCertificates.map((cert, index) => (
                   <motion.div
                     key={index}
-                    className="flex-shrink-0 w-80 bg-gray-800 rounded-lg shadow-xl shadow-purple-500/20 overflow-hidden transform hover:scale-105 transition-transform duration-300 border border-purple-700 certificate-card-hover"
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
+                    className="flex-shrink-0 w-80 bg-black/80 rounded-none border border-green-700 overflow-hidden transform hover:scale-[1.01] transition-transform duration-150 shadow-lg shadow-green-900/50"
+                    initial={{ opacity: 0, x: 20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true, amount: 0.2 }}
-                    transition={{ duration: 0.6, ease: "easeOut", delay: index * 0.05 }}
+                    transition={{ duration: 0.5, delay: index * 0.05 }}
                   >
-                    {/* Adiciona a imagem do certificado */}
                     <img
                       src={cert.imageUrl}
                       alt={cert.title}
-                      className="w-full h-48 object-cover object-top border-b border-gray-700"
+                      className="w-full h-40 object-cover object-top border-b border-green-700 filter grayscale-80 contrast-150"
                     />
-                    <div className="p-6">
-                      <h3 className="text-xl font-semibold text-purple-300 mb-2 font-mono">{cert.title}</h3>
-                      <p className="text-gray-400 text-sm mb-2">Emitido por: <span className="font-semibold text-gray-300">{cert.issuer}</span></p>
+                    <div className="p-4">
+                      <h3 className="text-lg font-semibold text-green-300 mb-2">{cert.title}</h3>
+                      <p className="text-gray-400 text-sm mb-1">Emitido: <span className="font-semibold text-gray-300">{cert.issuer}</span></p>
                       <p className="text-gray-400 text-sm mb-4">Data: <span className="font-semibold text-gray-300">{cert.date}</span></p>
                       {cert.link && cert.link !== '#' && (
                         <div className="flex justify-end">
-                          <a href={cert.link} target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300 transition-colors flex items-center space-x-1 hover:underline">
-                            <ExternalLink size={18} />
-                            <span className="font-mono">Ver Certificado</span>
+                          <a href={cert.link} target="_blank" rel="noopener noreferrer" className="text-cyan-400 hover:text-cyan-300 transition-colors flex items-center space-x-1 text-sm">
+                            <ExternalLink size={16} />
+                            <span>Ver Ficheiro</span>
                           </a>
                         </div>
                       )}
@@ -579,103 +578,85 @@ const App = () => {
         {/* Contact Section */}
         <motion.section
           id="contact"
-          className="py-20 bg-gray-800 p-4 relative overflow-hidden border-t border-gray-700"
+          className="py-20 bg-black p-4 border-t border-green-700"
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
+          transition={{ duration: 0.8 }}
         >
-          {/* Subtle background animation */}
-          <div className="absolute inset-0 z-0 opacity-10">
-            <div className="w-full h-full bg-gradient-to-br from-blue-900 via-purple-900 to-pink-900 animate-gradientShift"></div>
-          </div>
-
-          <div className="container mx-auto max-w-2xl relative z-10">
-            <h2 className="text-4xl font-bold text-center text-cyan-400 mb-12">
-              <AnimatedText text="Entre em Contato" delay={70} />
+          <div className="container mx-auto max-w-2xl relative">
+            <h2 className="text-3xl font-bold text-center text-green-400 mb-10">
+              $ ssh Gelson-do-Souto@contact <span className="animate-pulse">_</span>
             </h2>
             <motion.div
-              className="bg-gray-900 rounded-xl shadow-2xl shadow-cyan-500/30 p-8 md:p-12 border border-cyan-700 contact-form-border-glow"
+              className="bg-black rounded-none border-2 border-green-600 p-8 md:p-10 shadow-xl shadow-green-900/50"
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true, amount: 0.5 }}
-              transition={{ duration: 0.7, ease: "easeOut", delay: 0.2 }}
+              transition={{ duration: 0.7, delay: 0.2 }}
             >
-              <p className="text-gray-300 text-center mb-8 text-lg font-mono">
-                <span className="text-cyan-300">&gt;</span> Ficarei feliz em discutir novas oportunidades ou responder a quaisquer perguntas.
+              <p className="text-gray-300 text-center mb-8 text-sm">
+                <span className="text-green-300"># Enviar Pacote:</span> Utilize o formulário abaixo ou envie um telegrama digital.
               </p>
-              {/* ATENÇÃO: Substitua a URL abaixo pela sua URL do Formspree */}
+              {/* Usando o handler corrigido */}
               <form 
                 ref={contactFormRef} 
                 onSubmit={handleContactSubmit} 
-                action="https://formspree.io/f/mjkonrvk" 
+                action="https://formspree.io/f/mjkonrvk" // MANTENHA O SEU LINK
                 method="POST" 
-                className="space-y-6"
+                className="space-y-4"
               >
                 <div>
-                  <label htmlFor="name" className="block text-gray-300 text-sm font-bold mb-2 font-mono">
-                    Nome Completo <span className="text-cyan-400">_</span>
+                  <label htmlFor="name" className="block text-green-400 text-sm font-bold mb-1">
+                    Nome: <span className="text-gray-500">_</span>
                   </label>
                   <motion.input
                     type="text"
                     id="name"
                     name="name"
-                    className="shadow appearance-none border border-gray-700 rounded-lg w-full py-3 px-4 text-gray-100 leading-tight focus:outline-none focus:ring-2 focus:ring-cyan-500 bg-gray-700 transition-all duration-300 input-focus-glow"
-                    placeholder="Seu Nome"
+                    className="shadow appearance-none border border-green-700 rounded-none w-full py-2 px-3 text-gray-100 leading-tight focus:outline-none focus:ring-1 focus:ring-green-400 bg-gray-900 input-terminal-glow"
+                    placeholder="Nome de Utilizador"
                     required
-                    initial={{ opacity: 0, y: 10 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.5 }}
-                    transition={{ duration: 0.4, ease: "easeOut", delay: 0.3 }}
+                    transition={{ duration: 0.4, delay: 0.3 }}
                   />
                 </div>
                 <div>
-                  <label htmlFor="_replyto" className="block text-gray-300 text-sm font-bold mb-2 font-mono">
-                    Email <span className="text-cyan-400">_</span>
+                  <label htmlFor="_replyto" className="block text-green-400 text-sm font-bold mb-1">
+                    Email: <span className="text-gray-500">_</span>
                   </label>
-                  {/* Formspree usa '_replyto' para o email de resposta */}
                   <motion.input
                     type="email"
                     id="email"
                     name="_replyto"
-                    className="shadow appearance-none border border-gray-700 rounded-lg w-full py-3 px-4 text-gray-100 leading-tight focus:outline-none focus:ring-2 focus:ring-cyan-500 bg-gray-700 transition-all duration-300 input-focus-glow"
-                    placeholder="seu.email@exemplo.com"
+                    className="shadow appearance-none border border-green-700 rounded-none w-full py-2 px-3 text-gray-100 leading-tight focus:outline-none focus:ring-1 focus:ring-green-400 bg-gray-900 input-terminal-glow"
+                    placeholder="endereço@servidor.com"
                     required
-                    initial={{ opacity: 0, y: 10 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.5 }}
-                    transition={{ duration: 0.4, ease: "easeOut", delay: 0.4 }}
+                    transition={{ duration: 0.4, delay: 0.4 }}
                   />
                 </div>
                 <div>
-                  <label htmlFor="message" className="block text-gray-300 text-sm font-bold mb-2 font-mono">
-                    Mensagem <span className="text-cyan-400">_</span>
+                  <label htmlFor="message" className="block text-green-400 text-sm font-bold mb-1">
+                    Mensagem: <span className="text-gray-500">_</span>
                   </label>
                   <motion.textarea
                     id="message"
                     name="message"
-                    rows="6"
-                    className="shadow appearance-none border border-gray-700 rounded-lg w-full py-3 px-4 text-gray-100 leading-tight focus:outline-none focus:ring-2 focus:ring-cyan-500 bg-gray-700 transition-all duration-300 input-focus-glow"
-                    placeholder="Sua mensagem..."
+                    rows="4"
+                    className="shadow appearance-none border border-green-700 rounded-none w-full py-2 px-3 text-gray-100 leading-tight focus:outline-none focus:ring-1 focus:ring-green-400 bg-gray-900 input-terminal-glow"
+                    placeholder="Comando a ser executado..."
                     required
-                    initial={{ opacity: 0, y: 10 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.5 }}
-                    transition={{ duration: 0.4, ease: "easeOut", delay: 0.5 }}
+                    transition={{ duration: 0.4, delay: 0.5 }}
                   ></motion.textarea>
                 </div>
-                <div className="flex justify-center">
+                <div className="flex justify-center pt-4">
                   <motion.button
                     type="submit"
-                    className="bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-3 px-8 rounded-full transition-transform transform hover:scale-105 shadow-lg shadow-cyan-500/50 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 focus:ring-offset-gray-900 button-glow"
+                    className="bg-green-600 hover:bg-green-700 text-black font-bold py-2 px-6 transition-transform transform border border-green-400 terminal-button"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true, amount: 0.5 }}
-                    transition={{ duration: 0.5, ease: "easeOut", delay: 0.6 }}
+                    transition={{ duration: 0.5, delay: 0.6 }}
                   >
-                    Enviar Mensagem
+                    $ run: Enviar Mensagem
                   </motion.button>
                 </div>
               </form>
@@ -685,150 +666,105 @@ const App = () => {
       </main>
 
       {/* Footer */}
-      <footer className="bg-gray-950 py-8 text-center text-gray-500 text-sm border-t border-cyan-700 font-mono">
+      <footer className="bg-black py-6 text-center text-gray-500 text-xs border-t border-green-700">
         <div className="container mx-auto">
-          <p>&copy; {new Date().getFullYear()} Gelson do Souto. Todos os direitos reservados.</p>
-          <div className="flex justify-center space-x-4 mt-4">
+          <p>CMD: <span className="text-green-400">STATUS: OK</span> | Versão 1.0.0 (Terminal Mode)</p>
+          <p>&copy; {new Date().getFullYear()} Gelson do Souto. Direitos de código reservados.</p>
+          <div className="flex justify-center space-x-4 mt-3">
             <a
               href="https://www.linkedin.com/in/gelson-do-souto"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-400 hover:text-cyan-400 transition-colors"
+              className="text-gray-400 hover:text-green-400 transition-colors"
               aria-label="LinkedIn"
             >
-              <Linkedin size={24} />
+              <Linkedin size={20} />
             </a>
             <a
               href="https://github.com/Gelson-do-Souto"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-400 hover:text-cyan-400 transition-colors"
+              className="text-gray-400 hover:text-green-400 transition-colors"
               aria-label="GitHub"
             >
-              <Github size={24} />
+              <Github size={20} />
             </a>
           </div>
         </div>
       </footer>
 
-      {/* Global Styles (Tailwind CSS is assumed to be available) */}
+      {/* --- Global Styles for Terminal Aesthetic --- */}
       <style>{`
-        /* Font import for Inter and Roboto Mono (for hacker aesthetic) */
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Roboto+Mono:wght@400;500;700&display=swap');
+        /* 1. Importação de Fontes */
+        @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap');
         
-        .font-inter {
-          font-family: 'Inter', sans-serif;
+        /* 2. Aplicação da Fonte Monospace */
+        .font-mono, .bg-black {
+            font-family: 'Roboto Mono', monospace !important;
         }
 
-        .font-mono {
-          font-family: 'Roboto Mono', monospace;
-        }
-
-        /* Custom Animations */
+        /* 3. Efeitos de Terminal */
         @keyframes fadeInChar {
-          from {
-            opacity: 0;
-            transform: translateY(10px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
-        
         .animate-fadeInChar {
-          animation: fadeInChar 0.5s ease-out forwards;
+            animation: fadeInChar 0.1s forwards;
         }
 
-        @keyframes pulse-border {
-          0% {
-            box-shadow: 0 0 0 0px rgba(6, 182, 212, 0.7);
-          }
-          50% {
-            box-shadow: 0 0 0 8px rgba(6, 182, 212, 0);
-          }
-          100% {
-            box-shadow: 0 0 0 0px rgba(6, 182, 212, 0);
-          }
+        /* Efeito de brilho para texto/elementos-chave */
+        .text-shadow-terminal {
+            text-shadow: 0 0 5px rgba(0, 255, 0, 0.7), 0 0 10px rgba(0, 255, 0, 0.5);
+        }
+        .cursor-terminal-glow {
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+        }
+        .input-terminal-glow:focus {
+            box-shadow: 0 0 0 2px #00FF00, 0 0 10px rgba(0, 255, 0, 0.5);
         }
 
-        .animate-pulse-border {
-          animation: pulse-border 2s infinite ease-out;
+        /* 4. Background Video Terminal Style (Escurecer/Contraste) */
+        .background-video-terminal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -2;
+            opacity: 0.1; /* Escurece bastante */
+            filter: grayscale(100%) contrast(150%);
         }
 
-        @keyframes gradientShift {
-          0% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
+        /* 5. EFEITO SCANLINE/GRELA CRT */
+        .scanline-overlay {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 50; 
+            /* Grid subtle para simular pixel art / terminal */
+            background-image: 
+                linear-gradient(to right, rgba(0, 255, 0, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 255, 0, 0.05) 1px, transparent 1px);
+            background-size: 15px 15px;
+            mix-blend-mode: overlay;
         }
 
-        .animate-gradientShift {
-          background-size: 200% 200%;
-          animation: gradientShift 10s ease-in-out infinite;
+        /* 6. Carrossel - Animação mais 'robótica' e com pausa no hover */
+        @keyframes scroll-terminal {
+            to {
+                transform: translateX(calc(-50% - 16px)); /* 16px para space-x-8 */
+            }
         }
-
-        /* Hover effects with pseudo-elements */
-        .project-card-hover:hover {
-          box-shadow: 0 20px 25px -5px rgb(168 85 247 / 0.5), 0 8px 10px -6px rgb(168 85 247 / 0.5);
+        .animate-scroll-terminal {
+            animation: scroll-terminal linear infinite;
         }
-
-        .certificate-card-hover:hover {
-          box-shadow: 0 20px 25px -5px rgb(168 85 247 / 0.5), 0 8px 10px -6px rgb(168 85 247 / 0.5);
-        }
-
-        .tag-glow {
-          box-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
-        }
-
-        .button-glow:hover {
-          box-shadow: 0 0 20px rgba(6, 182, 212, 0.8), 0 0 10px rgba(6, 182, 212, 0.5);
-        }
-
-        /* Custom scroll animation for carousels */
-        @keyframes scroll {
-          0% {
-            transform: translateX(0);
-          }
-          100% {
-            transform: translateX(calc(-50% - 16px)); /* 50% for one set, 16px for half of the space */
-          }
-        }
-
-        .animate-scroll {
-          animation: scroll linear infinite;
-        }
-        
-        /* Video Background */
-        .background-video {
-          position: fixed;
-          top: 50%;
-          left: 50%;
-          min-width: 100%;
-          min-height: 100%;
-          width: auto;
-          height: auto;
-          z-index: -1;
-          transform: translate(-50%, -50%);
-          filter: brightness(25%) blur(1px); /* Darken and blur the video */
-        }
-
-        /* Style for the Contact Form border glow on hover */
-        @keyframes contactFormGlow {
-          from {
-            box-shadow: 0 0 10px rgba(6, 182, 212, 0.2), 0 0 20px rgba(6, 182, 212, 0.1);
-          }
-          to {
-            box-shadow: 0 0 20px rgba(6, 182, 212, 0.4), 0 0 40px rgba(6, 182, 212, 0.2);
-          }
-        }
-
-        .contact-form-border-glow:hover {
-          animation: contactFormGlow 1.5s infinite alternate;
-        }
-        
-        /* Input field glow on focus */
-        .input-focus-glow:focus {
-          box-shadow: 0 0 10px rgba(6, 182, 212, 0.6), 0 0 5px rgba(6, 182, 212, 0.4);
+        .animate-scroll-terminal:hover {
+            animation-play-state: paused;
         }
       `}</style>
     </div>
