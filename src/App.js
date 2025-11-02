@@ -457,7 +457,7 @@ const App = () => {
                             A Developer Backend is here
                         </h1>
                         <p className="text-lg md:text-xl text-gray-300 mb-8 font-mono">
-                            <span className="font-semibold text-green-300">$ Welcome!</span> Construindo infraestruturas robustas desde 2018.
+                            <span className="font-semibold text-green-300">$ Welcome!</span> Construindo infraestruturas robustas.
                         </p>
                         <div className="flex justify-center space-x-6">
                             <motion.a
