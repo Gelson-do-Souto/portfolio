@@ -2,23 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Efeitos de Interatividade nos Cantos */
+/* Efeitos de Interatividade nos Cantos - AJUSTADO PARA VERDE NEON */
 .corner-glow {
     position: absolute;
-    width: 150px; /* Tamanho do ponto de luz */
-    height: 150px; /* Tamanho do ponto de luz */
-    background: radial-gradient(circle, rgba(0, 255, 255, 0.3) 0%, rgba(0, 255, 255, 0) 70%); /* Cian com transparência */
-    border-radius: 50%; /* Faz com que seja um círculo */
-    filter: blur(50px); /* Suaviza o brilho */
-    pointer-events: none; /* Garante que não interfira com cliques */
-    opacity: 0.2; /* Opacidade inicial */
-    animation: pulse-glow 4s infinite alternate ease-in-out; /* Animação de pulso */
-    z-index: 0; /* Coloca no fundo */
+    width: 150px; 
+    height: 150px; 
+    /* Mudança para Verde Neon (RGB: 0, 255, 0) */
+    background: radial-gradient(circle, rgba(0, 255, 0, 0.3) 0%, rgba(0, 255, 0, 0) 70%); 
+    border-radius: 50%; 
+    filter: blur(50px); 
+    pointer-events: none; 
+    opacity: 0.2; 
+    animation: pulse-glow 4s infinite alternate ease-in-out; 
+    z-index: 0; 
 }
 
 /* Posições para os cantos */
 .corner-glow.top-0.left-0 {
-    top: -75px; /* Metade da largura/altura para centralizar na quina */
+    top: -75px; 
     left: -75px;
 }
 
@@ -45,7 +46,8 @@
     transform: translate(-50%, -50%);
     width: 250px;
     height: 250px;
-    background: radial-gradient(circle, rgba(168, 85, 247, 0.2) 0%, rgba(168, 85, 247, 0) 70%); /* Roxo com transparência */
+    /* Mudança para um Verde um pouco mais escuro/sutil */
+    background: radial-gradient(circle, rgba(0, 150, 0, 0.2) 0%, rgba(0, 150, 0, 0) 70%); 
     border-radius: 50%;
     filter: blur(80px);
     pointer-events: none;
