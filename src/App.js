@@ -9,7 +9,7 @@ import { Home, User, Code, Mail, Linkedin, Github, ExternalLink, Award, Database
 
 
 // =================================================================
-// 2. DADOS (MOCK DATA) - Movidos para fora do componente principal
+// 2. DADOS (MOCK DATA)
 // =================================================================
 
 const projectsData = [
@@ -59,7 +59,28 @@ const certificatesData = [
       link: "https://coursera.org/verify/8M05XMEJU265",
       imageUrl: "/images/coursera.jpg"
     },
-    // ... outros certificados
+    {
+      title: "Fundamentos do Python 1",
+      issuer: "Cisco Networking Academy",
+      date: "Dezembro 02, 2024",
+      link: "#",
+      imageUrl: "/images/python_cisco.jpg"
+    },
+    {
+      title: "Odoo Functional Certification - SAMPLE",
+      issuer: "Odoo S.A.",
+      date: "Março 07, 2025",
+      link: "#",
+      imageUrl: "/images/odoo.jpg"
+    },
+    {
+      // Certificado adicionado e confirmado
+      title: "Odoo DevOps Crash Course",
+      issuer: "Udemy",
+      date: "Outubro 31, 2025",
+      link: "ude.my/UC-047c5f07-8b94-45ed-981e-5e5ee4f31702",
+      imageUrl: "/images/Devs.jpg",
+    },
 ];
 
 const skillCategoriesData = [
@@ -98,7 +119,7 @@ const skillCategoriesData = [
 // 3. COMPONENTES AUXILIARES (Sub-Componentes)
 // =================================================================
 
-// Helper component for letter-by-letter animation (Mantido)
+// Helper component for letter-by-letter animation
 const AnimatedText = ({ text, delay = 50, className = '' }) => {
     return (
         <span className={className}>
@@ -244,7 +265,7 @@ const App = () => {
 
     // --- Efeitos de Interatividade (Cursor, Scroll, etc.) ---
     
-    // Mouse follower effect (Ajustado para o tema Terminal)
+    // Mouse follower effect
     useEffect(() => {
         const cursor = cursorRef.current;
         if (!cursor) return;
@@ -359,16 +380,17 @@ const App = () => {
             submitButton.textContent = originalText;
             submitButton.disabled = false;
             submitButton.classList.remove('bg-green-600', 'bg-red-600', 'bg-gray-600', 'cursor-not-allowed');
-            submitButton.classList.add('bg-green-600', 'hover:bg-green-700'); // Voltar à cor correta
+            submitButton.classList.add('bg-green-600', 'hover:bg-green-700');
         }, 3000);
     };
 
     return (
         <div className="min-h-screen bg-black text-green-400 font-mono relative overflow-hidden">
             
-            {/* --- EFEITO: Scanline/CRT Overlay e Background Video (MANTIDO) --- */}
+            {/* --- EFEITO: Scanline/CRT Overlay --- */}
             <div className="scanline-overlay"></div>
 
+            {/* Background Video */}
             <video
                 autoPlay
                 loop
@@ -380,14 +402,14 @@ const App = () => {
                 Seu navegador não suporta vídeos.
             </video>
 
-            {/* Custom Mouse Follower (MANTIDO) */}
+            {/* Custom Mouse Follower */}
             <div
                 ref={cursorRef}
                 className="pointer-events-none fixed z-50 -translate-x-1/2 -translate-y-1/2 rounded-sm bg-green-400 opacity-0 transition-all duration-150 ease-out mix-blend-screen shadow-green-400/80 cursor-terminal-glow"
                 style={{ width: '8px', height: '8px', filter: 'blur(1px)', transitionDuration: '150ms' }}
             ></div>
 
-            {/* Navigation Bar (AGORA COMPONENTE SEPARADO) */}
+            {/* Navigation Bar */}
             <NavigationBar activeSection={activeSection} scrollToSection={scrollToSection} />
 
             <main className="pt-20">
@@ -459,10 +481,10 @@ const App = () => {
                                 viewport={{ once: true, amount: 0.5 }}
                                 transition={{ duration: 0.7, delay: 0.2 }}
                             >
-                                {/* Imagem com filtro monocromático para tema terminal */}
+                                {/* CORREÇÃO DA IMAGEM APLICADA AQUI */}
                                 <img
-                                    src="/images/ICONE.png"
-                                    alt="Gelson do Souto"
+                                    src="/images/Captura de ecrã de 2025-11-02 13-08-56.jpg"
+                                    alt="Gelson do Souto - Perfil"
                                     className="rounded-none w-64 h-64 object-cover mx-auto border-2 border-green-500 filter grayscale contrast-120 hover:filter-none transition-filter duration-500"
                                 />
                             </motion.div>
@@ -668,7 +690,7 @@ const App = () => {
                 </motion.section>
             </main>
 
-            {/* --- Footer (MANTIDO) --- */}
+            {/* --- Footer --- */}
             <footer className="bg-black py-6 text-center text-gray-500 text-xs border-t border-green-700">
                 <div className="container mx-auto">
                     <p>CMD: <span className="text-green-400">STATUS: OK</span> | Versão 1.0.0 (Terminal Mode)</p>
@@ -696,7 +718,7 @@ const App = () => {
                 </div>
             </footer>
 
-            {/* --- Global Styles for Terminal Aesthetic (MANTIDO) --- */}
+            {/* --- Global Styles for Terminal Aesthetic --- */}
             <style>{`
                 /* 1. Importação de Fontes */
                 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap');
