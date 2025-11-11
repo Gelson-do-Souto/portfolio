@@ -2,43 +2,93 @@
 @tailwind components;
 @tailwind utilities;
 
+/* =================================================================
+ * 1. EFEITOS DE TERMINAL / CRT
+ * ================================================================= */
+
+/* Efeito de Linhas de Varredura (Scanline/CRT Overlay) */
+.scanline-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 50; /* Z-index alto para ficar sobre o conteúdo, mas abaixo do cursor */
+    pointer-events: none;
+    /* Imagem de fundo: linhas finas e horizontais */
+    background: repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        rgba(0, 0, 0, 0.4) 1px, /* Linha escura sutil */
+        transparent 2px,
+        transparent 4px
+    );
+    opacity: 0.1; /* Opacidade bem baixa para ser sutil */
+    filter: saturate(150%) brightness(120%);
+}
+
+/* Brilho e Sombra de Texto para Imitação de CRT */
+.text-shadow-terminal {
+    /* Brilho (Neon Green - Ajustado para combinar com o .corner-glow) */
+    text-shadow: 
+        0 0 4px rgba(0, 255, 0, 0.7), /* Glow mais próximo */
+        0 0 8px rgba(0, 255, 0, 0.4); /* Glow mais difuso */
+}
+
+/* Animação de Caracter (usada no AnimatedText component) */
+@keyframes fadeInChar {
+    to {
+        opacity: 1;
+    }
+}
+
+.animate-fadeInChar {
+    animation: fadeInChar 0.1s ease-out forwards;
+}
+
+/* Efeito de Brilho no Cursor Customizado */
+.cursor-terminal-glow {
+    /* Sombra que imita um cursor em um terminal antigo */
+    box-shadow: 0 0 5px 2px rgba(0, 255, 0, 0.8), 0 0 10px 4px rgba(0, 255, 0, 0.6);
+}
+
+/* Estilo para Botões que Parecem Comandos de Terminal */
+.terminal-button {
+    /* Transição de cores e sombra */
+    transition: background-color 0.2s, box-shadow 0.2s, transform 0.2s;
+    box-shadow: 0 0 3px rgba(0, 255, 0, 0.5);
+}
+
+.terminal-button:hover {
+    /* Aumenta o brilho e a sombra ao passar o mouse */
+    box-shadow: 0 0 8px rgba(0, 255, 0, 0.8), 0 0 12px rgba(0, 255, 0, 0.6);
+}
+
+/* =================================================================
+ * 2. SEU CÓDIGO DE GLOW (MANTIDO E AJUSTADO)
+ * ================================================================= */
+
 /* Efeitos de Interatividade nos Cantos - AJUSTADO PARA VERDE NEON */
 .corner-glow {
     position: absolute;
-    width: 150px; 
-    height: 150px; 
-    /* Mudança para Verde Neon (RGB: 0, 255, 0) */
-    background: radial-gradient(circle, rgba(0, 255, 0, 0.3) 0%, rgba(0, 255, 0, 0) 70%); 
-    border-radius: 50%; 
-    filter: blur(50px); 
-    pointer-events: none; 
-    opacity: 0.2; 
-    animation: pulse-glow 4s infinite alternate ease-in-out; 
-    z-index: 0; 
+    width: 150px;
+    height: 150px;
+    background: radial-gradient(circle, rgba(0, 255, 0, 0.3) 0%, rgba(0, 255, 0, 0) 70%);
+    border-radius: 50%;
+    filter: blur(50px);
+    pointer-events: none;
+    opacity: 0.2;
+    animation: pulse-glow 4s infinite alternate ease-in-out;
+    z-index: 0;
 }
 
 /* Posições para os cantos */
-.corner-glow.top-0.left-0 {
-    top: -75px; 
-    left: -75px;
-}
+.corner-glow.top-0.left-0 { top: -75px; left: -75px; }
+.corner-glow.top-0.right-0 { top: -75px; right: -75px; }
+.corner-glow.bottom-0.left-0 { bottom: -75px; left: -75px; }
+.corner-glow.bottom-0.right-0 { bottom: -75px; right: -75px; }
 
-.corner-glow.top-0.right-0 {
-    top: -75px;
-    right: -75px;
-}
-
-.corner-glow.bottom-0.left-0 {
-    bottom: -75px;
-    left: -75px;
-}
-
-.corner-glow.bottom-0.right-0 {
-    bottom: -75px;
-    right: -75px;
-}
-
-/* Efeito de brilho central (opcional, se você adicionou o .center-glow) */
+/* Efeito de brilho central (opcional) */
 .center-glow {
     position: absolute;
     top: 50%;
@@ -46,8 +96,7 @@
     transform: translate(-50%, -50%);
     width: 250px;
     height: 250px;
-    /* Mudança para um Verde um pouco mais escuro/sutil */
-    background: radial-gradient(circle, rgba(0, 150, 0, 0.2) 0%, rgba(0, 150, 0, 0) 70%); 
+    background: radial-gradient(circle, rgba(0, 150, 0, 0.2) 0%, rgba(0, 150, 0, 0) 70%);
     border-radius: 50%;
     filter: blur(80px);
     pointer-events: none;
@@ -69,4 +118,31 @@
     0% { opacity: 0.15; transform: translate(-50%, -50%) scale(1); }
     50% { opacity: 0.25; transform: translate(-50%, -50%) scale(1.05); }
     100% { opacity: 0.15; transform: translate(-50%, -50%) scale(1); }
+}
+
+/* =================================================================
+ * 3. ANIMAÇÃO DE SCROLL DO CARROSSEL (essencial)
+ * ================================================================= */
+
+/* Para garantir que os itens do carrossel fiquem lado a lado */
+.animate-scroll-terminal {
+    /* Os itens serão movidos via @keyframes terminalScroll (definido em tailwind.config.js) */
+    /* Importante: Os itens dentro devem ter flex-shrink-0 (que você já fez no React) */
+}
+
+/* Garantir que o video de background se ajuste corretamente, se estiver a usar */
+.background-video-terminal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: -100;
+    transform: translate(-50%, -50%);
+    /* Efeito para parecer mais com um fundo de terminal */
+    filter: grayscale(100%) contrast(150%) brightness(50%);
+    opacity: 0.2;
+    object-fit: cover;
 }
