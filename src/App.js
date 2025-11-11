@@ -17,7 +17,7 @@ const projectsData = [
         title: "KzEduca APP",
         description: "Uma app para educação financeira, focado no mercado Angolano, com o objectivo de resolver problemas de Finança pessoal e empresarial.",
         imageUrl: "images/Kz.png",
-        tags: ["Flutter", "Dart", "Firebase"], // Corrigido 'Farebase' para 'Firebase'
+        tags: ["Flutter", "Dart", "Firebase"],
         githubUrl: "https://github.com/Gelson-do-Souto/KzEduca-app"
     },
     {
@@ -38,18 +38,17 @@ const projectsData = [
         title: "Nany App",
         description: "Uma rede Social. Feito por Hobby.",
         imageUrl: "images/nan.png",
-        tags: ["Flutter", "Dart", "Firebase", "Python"], // Corrigido 'Farebase' para 'Firebase'
+        tags: ["Flutter", "Dart", "Firebase", "Python"],
         githubUrl: "https://github.com/Gelson-do-Souto/App_nany",
         demoUrl: "#"
     },
-    // Adicionado um projeto de exemplo para o "Carrinho Backend"
     {
         title: "E-commerce Backend API",
         description: "API RESTful para um sistema de e-commerce, incluindo gestão de produtos, utilizadores, autenticação, e um carrinho de compras robusto.",
-        imageUrl: "images/ecommerce-backend.jpg", // Adicione uma imagem relevante aqui
+        imageUrl: "images/ecommerce-backend.jpg",
         tags: ["Python", "Django REST Framework", "PostgreSQL", "Docker", "JWT"],
-        githubUrl: "https://github.com/Gelson-do-Souto/ecommerce-backend-api", // Exemplo
-        demoUrl: "#" // Se tiver um deploy da API (ex: Swagger UI), coloque aqui
+        githubUrl: "https://github.com/Gelson-do-Souto/ecommerce-backend-api",
+        demoUrl: "#"
     }
 ];
 
@@ -83,17 +82,15 @@ const certificatesData = [
         imageUrl: "/images/odoo.jpg"
     },
     {
-        // Certificado adicionado e confirmado
         title: "Odoo DevOps Crash Course",
         issuer: "Udemy",
-        date: "Outubro 31, 2025", // A data corrigida para que apareça como o certificado mais recente
-        link: "https://ude.my/UC-047c5f07-8b94-45ed-981e-5e5ee4f31702", // Link corrigido
+        date: "Outubro 31, 2025",
+        link: "https://ude.my/UC-047c5f07-8b94-45ed-981e-5e5ee4f31702",
         imageUrl: "/images/Devs.jpg",
     },
 ];
 
 // Odenar certificados pela data (mais recente primeiro)
-// Isso garante que o "último certificado" (mais recente) seja exibido corretamente
 certificatesData.sort((a, b) => new Date(b.date) - new Date(a.date));
 
 
@@ -124,9 +121,8 @@ const skillCategoriesData = [
         name: 'APIs',
         icon: <GitBranch size={20} />,
         color: 'text-pink-400',
-        skills: ['RESTful APIs', 'GraphQL', 'Microsserviços'] // Adicionado Microsserviços
+        skills: ['RESTful APIs', 'GraphQL', 'Microsserviços']
     },
-    // Nova categoria para o Carrinho Backend
     {
         id: 'e-commerce-backend',
         name: 'E-commerce Backend',
@@ -281,7 +277,7 @@ const App = () => {
     const cursorRef = useRef(null);
     const contactFormRef = useRef(null);
 
-    // Dados duplicados para carrossel infinito
+    // Dados duplicados para carrossel infinito (essencial para a técnica CSS)
     const duplicatedProjects = [...projectsData, ...projectsData];
     const duplicatedCertificates = [...certificatesData, ...certificatesData];
 
@@ -412,7 +408,7 @@ const App = () => {
             {/* --- EFEITO: Scanline/CRT Overlay --- */}
             <div className="scanline-overlay"></div>
 
-            {/* Background Video */}
+            {/* Background Video (Assumindo que você tem este vídeo no caminho correto) */}
             <video
                 autoPlay
                 loop
@@ -497,19 +493,17 @@ const App = () => {
                         </h2>
                         <div className="flex flex-col md:flex-row md:items-start md:space-x-10">
                             <motion.div
-                                className="md:w-1/3 mb-8 md:mb-0 flex flex-col items-center" // Adicionado flexbox para centralizar imagem e texto
+                                className="md:w-1/3 mb-8 md:mb-0 flex flex-col items-center"
                                 initial={{ opacity: 0, scale: 0.8 }}
                                 whileInView={{ opacity: 1, scale: 1 }}
                                 viewport={{ once: true, amount: 0.5 }}
                                 transition={{ duration: 0.7, delay: 0.2 }}
                             >
-                                {/* CORREÇÃO DA IMAGEM APLICADA AQUI */}
                                 <img
                                     src="images/img.jpg"
                                     alt="Gelson do Souto - Perfil"
                                     className="rounded-none w-64 h-64 object-cover border-2 border-green-500 filter grayscale contrast-120 hover:filter-none transition-filter duration-500"
                                 />
-                                {/* NOVO CÓDIGO: Nome do perfil visível */}
                                 <h3 className="text-xl font-bold text-center text-green-300 mt-4">
                                     Gelson do Souto
                                 </h3>
@@ -592,7 +586,9 @@ const App = () => {
                             $ cat /Projects/List <span className="animate-pulse">_</span>
                         </h2>
                         <div className="relative w-full overflow-hidden border-2 border-green-600 p-4 bg-gray-900/50">
+                            {/* ESTE É O BLOCO DO CARROSSEL DE PROJETOS */}
                             <div
+                                // A classe animate-scroll-terminal será definida no Tailwind Config
                                 className="flex space-x-8 animate-scroll-terminal"
                                 style={{ animationDuration: `${projectsData.length * 5}s` }}
                             >
@@ -618,7 +614,9 @@ const App = () => {
                             $ ls /Certificates <span className="animate-pulse">_</span>
                         </h2>
                         <div className="relative w-full overflow-hidden border-2 border-green-600 p-4 bg-black/70">
+                            {/* ESTE É O BLOCO DO CARROSSEL DE CERTIFICADOS */}
                             <div
+                                // A classe animate-scroll-terminal também será usada aqui
                                 className="flex space-x-8 animate-scroll-terminal"
                                 style={{ animationDuration: `${certificatesData.length * 6}s` }}
                             >
@@ -656,7 +654,7 @@ const App = () => {
                             <form
                                 ref={contactFormRef}
                                 onSubmit={handleContactSubmit}
-                                action="https://formspree.io/f/mjkonrvk" // MANTENHA O SEU LINK
+                                action="https://formspree.io/f/mjkonrvk"
                                 method="POST"
                                 className="space-y-4"
                             >
@@ -664,69 +662,63 @@ const App = () => {
                                     <label htmlFor="name" className="block text-green-400 text-sm font-bold mb-1">
                                         Nome: <span className="text-gray-500">_</span>
                                     </label>
-                                    <motion.input
+                                    <input
                                         type="text"
                                         id="name"
                                         name="name"
-                                        className="shadow appearance-none border border-green-700 rounded-none w-full py-2 px-3 text-gray-100 leading-tight focus:outline-none focus:ring-1 focus:ring-green-400 bg-gray-900 input-terminal-glow"
-                                        placeholder="Nome de Utilizador"
                                         required
-                                        transition={{ duration: 0.4, delay: 0.3 }}
+                                        className="w-full bg-gray-900 border border-green-600 p-3 text-green-300 focus:ring-green-400 focus:border-green-400 focus:outline-none"
                                     />
                                 </div>
                                 <div>
-                                    <label htmlFor="_replyto" className="block text-green-400 text-sm font-bold mb-1">
+                                    <label htmlFor="email" className="block text-green-400 text-sm font-bold mb-1">
                                         Email: <span className="text-gray-500">_</span>
                                     </label>
-                                    <motion.input
+                                    <input
                                         type="email"
                                         id="email"
-                                        name="_replyto"
-                                        className="shadow appearance-none border border-green-700 rounded-none w-full py-2 px-3 text-gray-100 leading-tight focus:outline-none focus:ring-1 focus:ring-green-400 bg-gray-900 input-terminal-glow"
-                                        placeholder="endereço@servidor.com"
+                                        name="email"
                                         required
-                                        transition={{ duration: 0.4, delay: 0.4 }}
+                                        className="w-full bg-gray-900 border border-green-600 p-3 text-green-300 focus:ring-green-400 focus:border-green-400 focus:outline-none"
                                     />
                                 </div>
                                 <div>
                                     <label htmlFor="message" className="block text-green-400 text-sm font-bold mb-1">
                                         Mensagem: <span className="text-gray-500">_</span>
                                     </label>
-                                    <motion.textarea
+                                    <textarea
                                         id="message"
                                         name="message"
-                                        rows="5"
-                                        className="shadow appearance-none border border-green-700 rounded-none w-full py-2 px-3 text-gray-100 leading-tight focus:outline-none focus:ring-1 focus:ring-green-400 bg-gray-900 input-terminal-glow"
-                                        placeholder="Digite a sua mensagem aqui..."
+                                        rows="4"
                                         required
-                                        transition={{ duration: 0.4, delay: 0.5 }}
-                                    ></motion.textarea>
+                                        className="w-full bg-gray-900 border border-green-600 p-3 text-green-300 focus:ring-green-400 focus:border-green-400 focus:outline-none"
+                                    ></textarea>
                                 </div>
-                                <motion.button
-                                    type="submit"
-                                    className="bg-green-600 hover:bg-green-700 text-black font-bold py-2 px-5 w-full transition-transform transform border border-green-400 terminal-button"
-                                    whileHover={{ scale: 1.02 }}
-                                    whileTap={{ scale: 0.98 }}
-                                >
-                                    $ send: 'Mensagem'
-                                </motion.button>
+                                <div className="text-center">
+                                    <button
+                                        type="submit"
+                                        className="bg-green-600 hover:bg-green-700 text-black font-bold py-3 px-8 transition-transform transform border border-green-400 terminal-button w-full md:w-auto"
+                                    >
+                                        $ submit_form: 'Conectar'
+                                    </button>
+                                </div>
                             </form>
-                            <div className="flex justify-center space-x-6 mt-8">
-                                <a href="https://www.linkedin.com/in/gelson-do-souto-214486259/" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 transition-colors">
-                                    <Linkedin size={28} />
-                                </a>
-                                <a href="https://github.com/Gelson-do-Souto" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-gray-300 transition-colors">
-                                    <Github size={28} />
-                                </a>
-                            </div>
                         </motion.div>
+                        <div className="flex justify-center space-x-6 mt-8">
+                            <a href="https://linkedin.com/in/gelson-do-souto" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-cyan-400 transition-colors">
+                                <Linkedin size={28} />
+                            </a>
+                            <a href="https://github.com/Gelson-do-Souto" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-green-400 transition-colors">
+                                <Github size={28} />
+                            </a>
+                        </div>
                     </div>
                 </motion.section>
 
-                {/* Footer */}
-                <footer className="py-8 bg-black border-t border-green-700 text-center text-gray-500 text-sm">
-                    <p>&copy; 2024 Gelson do Souto. All rights reserved.</p>
-                    <p>Feito com <span className="text-red-500">❤️</span> e React.js</p>
+                <footer className="py-4 text-center text-sm text-gray-500 border-t border-green-900">
+                    <p>
+                        $ System Status: <span className="text-green-500">Operational</span> | © 2024 Gelson do Souto
+                    </p>
                 </footer>
 
             </main>
