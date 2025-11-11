@@ -5,7 +5,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion } from 'framer-motion';
 
 // Lucide-react icons
-import { Home, User, Code, Mail, Linkedin, Github, ExternalLink, Award, Database, Cloud, Terminal, GitBranch, ShoppingCart } from 'lucide-react';
+import { Home, User, Code, Mail, Linkedin, Github, ExternalLink, Award, Database, Cloud, Terminal, GitBranch, ShoppingCart, Send } from 'lucide-react';
 
 
 // =================================================================
@@ -14,46 +14,66 @@ import { Home, User, Code, Mail, Linkedin, Github, ExternalLink, Award, Database
 
 const projectsData = [
     {
-        title: "KzEduca APP",
-        description: "Uma app para educação financeira, focado no mercado Angolano, com o objectivo de resolver problemas de Finança pessoal e empresarial.",
+        title: "KzEduca APP (API/Backend)",
+        description: "API de gestão de utilizadores e dados financeiros para uma app de educação financeira focada no mercado Angolano.",
         imageUrl: "images/Kz.png",
-        tags: ["Flutter", "Dart", "Firebase"], // Corrigido 'Farebase' para 'Firebase'
+        tags: ["Node.js", "Express", "MongoDB", "Auth JWT"], // Backend Focus
         githubUrl: "https://github.com/Gelson-do-Souto/KzEduca-app"
     },
     {
-        title: "Gson Creativity Site",
-        description: "Focado para uma empresa de prestação de serviços.",
+        title: "E-commerce Backend API",
+        description: "API RESTful robusta para um sistema de e-commerce, incluindo gestão de produtos, utilizadores, autenticação, e um carrinho de compras escalável.",
+        imageUrl: "images/ecommerce-backend.jpg",
+        tags: ["Python", "Django REST Framework", "PostgreSQL", "Docker", "JWT"],
+        githubUrl: "https://github.com/Gelson-do-Souto/ecommerce-backend-api",
+        demoUrl: "#"
+    },
+    {
+        title: "Módulo de Localização - Odoo",
+        description: "Focado em integrações de backend para os planos de contas Angolano, taxas e localização em Odoo (ERP).",
+        imageUrl: "images/projecto.png",
+        tags: ["Python", "XML", "PostgreSQL", "Odoo"],
+    },
+    {
+        title: "Microserviço de Notificações",
+        description: "Serviço de alta disponibilidade para envio de emails, SMS e notificações push, desacoplado dos sistemas principais.",
+        imageUrl: "images/nan.png",
+        tags: ["Go", "RabbitMQ", "Redis", "Microsserviços"],
+        githubUrl: "https://github.com/Gelson-do-Souto/App_nany", // Exemplo, alterar para o repositório do microserviço
+        demoUrl: "#"
+    },
+    {
+        title: "Gson Creativity Site (Front-end)",
+        description: "Desenvolvimento Front-end do site para uma empresa de prestação de serviços (mantido como exemplo de full-stack/colaboração).",
         imageUrl: "images/Gson.png",
-        tags: ["Html", "CSS", "JavaSript"],
+        tags: ["Html", "CSS", "JavaSript", "Front-end"],
         githubUrl: "https://github.com/Gelson-do-Souto/Site_Gson_Creativity",
         demoUrl: "https://gson-creativity.vercel.app/"
     },
-    {
-        title: "Modulo de Localização - Odoo",
-        description: "Focados nos planos de contas Angolano, as Taxas e Localização. E maisssssss....",
-        imageUrl: "images/projecto.png",
-        tags: ["Python", "XML", "PostgreSQL", "CSV"],
-    },
-    {
-        title: "Nany App",
-        description: "Uma rede Social. Feito por Hobby.",
-        imageUrl: "images/nan.png",
-        tags: ["Flutter", "Dart", "Firebase", "Python"], // Corrigido 'Farebase' para 'Firebase'
-        githubUrl: "https://github.com/Gelson-do-Souto/App_nany",
-        demoUrl: "#"
-    },
-    // Adicionado um projeto de exemplo para o "Carrinho Backend"
-    {
-        title: "E-commerce Backend API",
-        description: "API RESTful para um sistema de e-commerce, incluindo gestão de produtos, utilizadores, autenticação, e um carrinho de compras robusto.",
-        imageUrl: "images/ecommerce-backend.jpg", // Adicione uma imagem relevante aqui
-        tags: ["Python", "Django REST Framework", "PostgreSQL", "Docker", "JWT"],
-        githubUrl: "https://github.com/Gelson-do-Souto/ecommerce-backend-api", // Exemplo
-        demoUrl: "#" // Se tiver um deploy da API (ex: Swagger UI), coloque aqui
-    }
 ];
 
 const certificatesData = [
+    {
+        title: "Odoo DevOps Crash Course",
+        issuer: "Udemy",
+        date: "Outubro 31, 2025", // Mais recente
+        link: "https://ude.my/UC-047c5f07-8b94-45ed-981e-5e5ee4f31702",
+        imageUrl: "/images/Devs.jpg",
+    },
+    {
+        title: "Odoo Functional Certification - SAMPLE",
+        issuer: "Odoo S.A.",
+        date: "Março 07, 2025",
+        link: "#",
+        imageUrl: "/images/odoo.jpg"
+    },
+    {
+        title: "Fundamentos do Python 1",
+        issuer: "Cisco Networking Academy",
+        date: "Dezembro 02, 2024",
+        link: "#",
+        imageUrl: "/images/python_cisco.jpg"
+    },
     {
         title: "Software Engineering - PROFESSIONAL DIPLOMA PROGRAM",
         issuer: "European Open University",
@@ -68,39 +88,16 @@ const certificatesData = [
         link: "https://coursera.org/verify/8M05XMEJU265",
         imageUrl: "/images/coursera.jpg"
     },
-    {
-        title: "Fundamentos do Python 1",
-        issuer: "Cisco Networking Academy",
-        date: "Dezembro 02, 2024",
-        link: "#",
-        imageUrl: "/images/python_cisco.jpg"
-    },
-    {
-        title: "Odoo Functional Certification - SAMPLE",
-        issuer: "Odoo S.A.",
-        date: "Março 07, 2025",
-        link: "#",
-        imageUrl: "/images/odoo.jpg"
-    },
-    {
-        // Certificado adicionado e confirmado
-        title: "Odoo DevOps Crash Course",
-        issuer: "Udemy",
-        date: "Outubro 31, 2025", // A data corrigida para que apareça como o certificado mais recente
-        link: "https://ude.my/UC-047c5f07-8b94-45ed-981e-5e5ee4f31702", // Link corrigido
-        imageUrl: "/images/Devs.jpg",
-    },
 ];
 
 // Odenar certificados pela data (mais recente primeiro)
-// Isso garante que o "último certificado" (mais recente) seja exibido corretamente
 certificatesData.sort((a, b) => new Date(b.date) - new Date(a.date));
 
 
 const skillCategoriesData = [
     {
         id: 'languages',
-        name: 'Linguagens',
+        name: 'Linguagens & Frameworks',
         icon: <Terminal size={20} />,
         color: 'text-green-400',
         skills: ['Python (Django, Flask)', 'Node.js (Express)', 'Java (Spring Boot)', 'Go', 'PHP (Laravel)']
@@ -110,29 +107,28 @@ const skillCategoriesData = [
         name: 'Bancos de Dados',
         icon: <Database size={20} />,
         color: 'text-yellow-400',
-        skills: ['PostgreSQL', 'MySQL', 'MongoDB', 'Redis']
+        skills: ['PostgreSQL', 'MySQL', 'MongoDB', 'Redis', 'Elasticsearch']
     },
     {
         id: 'cloud-devops',
         name: 'Cloud & DevOps',
         icon: <Cloud size={20} />,
         color: 'text-cyan-400',
-        skills: ['AWS', 'Docker', 'Kubernetes', 'CI/CD']
+        skills: ['AWS (EC2, S3, RDS)', 'Docker', 'Kubernetes', 'CI/CD (GitLab/GitHub Actions)', 'Linux']
     },
     {
         id: 'apis',
-        name: 'APIs',
+        name: 'Arquitetura & APIs',
         icon: <GitBranch size={20} />,
         color: 'text-pink-400',
-        skills: ['RESTful APIs', 'GraphQL', 'Microsserviços'] // Adicionado Microsserviços
+        skills: ['RESTful APIs', 'GraphQL', 'Microsserviços', 'Arquitetura Hexagonal', 'Message Queues (RabbitMQ)']
     },
-    // Nova categoria para o Carrinho Backend
     {
         id: 'e-commerce-backend',
-        name: 'E-commerce Backend',
+        name: 'Domínio E-commerce',
         icon: <ShoppingCart size={20} />,
         color: 'text-purple-400',
-        skills: ['Carrinho de Compras', 'Gestão de Produtos', 'Autenticação & Autorização', 'Processamento de Pedidos']
+        skills: ['Carrinho de Compras', 'Gestão de Inventário/Produtos', 'Autenticação & Autorização (OAuth/JWT)', 'Processamento de Pedidos']
     }
 ];
 
@@ -196,40 +192,43 @@ const NavigationBar = ({ activeSection, scrollToSection }) => {
     );
 };
 
-// Componente para o Projeto (Item do Carrossel)
+// Componente para o Projeto (Grid Card - Substituto do Carrossel)
 const ProjectCard = ({ project, index }) => (
     <motion.div
         key={index}
-        className="flex-shrink-0 w-80 bg-black/80 rounded-none border border-green-700 overflow-hidden transform hover:scale-[1.01] transition-transform duration-150 shadow-lg shadow-green-900/50"
-        initial={{ opacity: 0, x: 20 }}
-        whileInView={{ opacity: 1, x: 0 }}
+        className="bg-black/80 rounded-none border border-green-700 overflow-hidden transform hover:scale-[1.03] hover:border-green-400 transition-all duration-300 shadow-lg shadow-green-900/50 cursor-pointer"
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.2 }}
-        transition={{ duration: 0.5, delay: index * 0.05 }}
+        transition={{ duration: 0.6, delay: index * 0.1 }}
+        whileHover={{
+            boxShadow: "0 0 15px rgba(52, 211, 163, 0.7)", // Efeito de brilho ao passar o mouse
+        }}
     >
         <img
             src={project.imageUrl}
             alt={project.title}
-            className="w-full h-40 object-cover border-b border-green-700 filter grayscale-80 contrast-150"
+            className="w-full h-40 object-cover border-b border-green-700 filter grayscale contrast-150 hover:grayscale-0 transition-filter duration-500"
         />
         <div className="p-4">
             <h3 className="text-xl font-semibold text-green-300 mb-2">{project.title}</h3>
             <p className="text-gray-400 mb-3 text-sm">{project.description}</p>
             <div className="flex flex-wrap gap-2 mb-4">
                 {project.tags.map((tag, tagIndex) => (
-                    <span key={tagIndex} className="bg-green-900 text-green-300 text-xs px-2 py-0.5 rounded-none border border-green-700">
+                    <span key={tagIndex} className="bg-green-900 text-green-300 text-xs px-2 py-0.5 rounded-full border border-green-700 font-medium">
                         {tag}
                     </span>
                 ))}
             </div>
-            <div className="flex justify-end space-x-3">
+            <div className="flex justify-end space-x-3 pt-2 border-t border-green-800">
                 {project.githubUrl && (
-                    <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="text-cyan-400 hover:text-cyan-300 transition-colors flex items-center space-x-1 text-sm">
+                    <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="text-cyan-400 hover:text-cyan-300 transition-colors flex items-center space-x-1 text-sm terminal-link">
                         <Github size={16} />
                         <span>Código</span>
                     </a>
                 )}
                 {project.demoUrl && project.demoUrl !== "#" && (
-                    <a href={project.demoUrl} target="_blank" rel="noopener noreferrer" className="text-cyan-400 hover:text-cyan-300 transition-colors flex items-center space-x-1 text-sm">
+                    <a href={project.demoUrl} target="_blank" rel="noopener noreferrer" className="text-cyan-400 hover:text-cyan-300 transition-colors flex items-center space-x-1 text-sm terminal-link">
                         <ExternalLink size={16} />
                         <span>Deploy</span>
                     </a>
@@ -240,30 +239,33 @@ const ProjectCard = ({ project, index }) => (
 );
 
 
-// Componente para o Certificado (Item do Carrossel)
+// Componente para o Certificado (Grid Card - Substituto do Carrossel)
 const CertificateCard = ({ cert, index }) => (
     <motion.div
         key={index}
-        className="flex-shrink-0 w-80 bg-black/80 rounded-none border border-green-700 overflow-hidden transform hover:scale-[1.01] transition-transform duration-150 shadow-lg shadow-green-900/50"
-        initial={{ opacity: 0, x: 20 }}
-        whileInView={{ opacity: 1, x: 0 }}
+        className="bg-black/80 rounded-none border border-green-700 overflow-hidden transform hover:scale-[1.03] hover:border-green-400 transition-all duration-300 shadow-lg shadow-green-900/50 cursor-pointer"
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.2 }}
-        transition={{ duration: 0.5, delay: index * 0.05 }}
+        transition={{ duration: 0.6, delay: index * 0.1 }}
+        whileHover={{
+            boxShadow: "0 0 10px rgba(52, 211, 163, 0.5)",
+        }}
     >
         <img
             src={cert.imageUrl}
             alt={cert.title}
-            className="w-full h-40 object-cover object-top border-b border-green-700 filter grayscale-80 contrast-150"
+            className="w-full h-36 object-cover object-top border-b border-green-700 filter grayscale contrast-120 hover:filter-none transition-filter duration-500"
         />
         <div className="p-4">
             <h3 className="text-lg font-semibold text-green-300 mb-2">{cert.title}</h3>
             <p className="text-gray-400 text-sm mb-1">Emitido: <span className="font-semibold text-gray-300">{cert.issuer}</span></p>
             <p className="text-gray-400 text-sm mb-4">Data: <span className="font-semibold text-gray-300">{cert.date}</span></p>
             {cert.link && cert.link !== '#' && (
-                <div className="flex justify-end">
-                    <a href={cert.link} target="_blank" rel="noopener noreferrer" className="text-cyan-400 hover:text-cyan-300 transition-colors flex items-center space-x-1 text-sm">
+                <div className="flex justify-end pt-2 border-t border-green-800">
+                    <a href={cert.link} target="_blank" rel="noopener noreferrer" className="text-cyan-400 hover:text-cyan-300 transition-colors flex items-center space-x-1 text-sm terminal-link">
                         <ExternalLink size={16} />
-                        <span>Ver Ficheiro</span>
+                        <span>Ver Certificado</span>
                     </a>
                 </div>
             )}
@@ -280,10 +282,6 @@ const App = () => {
     const [activeSkillCategory, setActiveSkillCategory] = useState('languages');
     const cursorRef = useRef(null);
     const contactFormRef = useRef(null);
-
-    // Dados duplicados para carrossel infinito
-    const duplicatedProjects = [...projectsData, ...projectsData];
-    const duplicatedCertificates = [...certificatesData, ...certificatesData];
 
     // --- Efeitos de Interatividade (Cursor, Scroll, etc.) ---
 
@@ -315,7 +313,14 @@ const App = () => {
     const scrollToSection = useCallback((sectionId) => {
         const section = document.getElementById(sectionId);
         if (section) {
-            section.scrollIntoView({ behavior: 'smooth' });
+            // Ajuste para não ficar por baixo do nav-bar fixo
+            const navHeight = 80;
+            const topPosition = section.offsetTop - navHeight;
+
+            window.scrollTo({
+                top: topPosition,
+                behavior: 'smooth'
+            });
             setActiveSection(sectionId);
         }
     }, []);
@@ -324,8 +329,9 @@ const App = () => {
     useEffect(() => {
         const observerOptions = {
             root: null,
-            rootMargin: '0px',
-            threshold: 0.7,
+            // Ajusta o 'rootMargin' para o cabeçalho fixo (ex: -80px)
+            rootMargin: '-80px 0px -50% 0px',
+            threshold: 0, // Um valor pequeno para que detete a interseção rapidamente
         };
 
         const observerCallback = (entries) => {
@@ -362,15 +368,15 @@ const App = () => {
         e.preventDefault();
         const form = contactFormRef.current;
         const submitButton = e.currentTarget.querySelector('button[type="submit"]');
-        const originalText = submitButton.textContent;
+        const originalText = 'Enviar Mensagem';
 
         if (!form || !submitButton) return;
 
         // Estado de envio
         submitButton.textContent = 'A Enviar...';
         submitButton.disabled = true;
-        submitButton.classList.remove('bg-green-600', 'hover:bg-green-700');
-        submitButton.classList.add('bg-gray-600', 'cursor-not-allowed');
+        submitButton.classList.remove('bg-green-600', 'hover:bg-green-700', 'text-black');
+        submitButton.classList.add('bg-gray-600', 'cursor-not-allowed', 'text-gray-300');
 
         try {
             const response = await fetch(form.action, {
@@ -383,37 +389,41 @@ const App = () => {
 
             if (response.ok) {
                 submitButton.textContent = 'Enviado! ✅';
-                submitButton.classList.remove('bg-gray-600');
-                submitButton.classList.add('bg-green-600');
-                form.reset();
+                submitButton.classList.remove('bg-gray-600', 'bg-red-600');
+                submitButton.classList.add('bg-green-600', 'text-black');
+                // Limpa o formulário apenas após o sucesso
+                setTimeout(() => {
+                    form.reset();
+                }, 1000);
             } else {
                 submitButton.textContent = 'Falha! ❌';
                 submitButton.classList.remove('bg-gray-600');
-                submitButton.classList.add('bg-red-600');
+                submitButton.classList.add('bg-red-600', 'text-white');
             }
         } catch (error) {
             submitButton.textContent = 'Erro de Rede! 📶';
             submitButton.classList.remove('bg-gray-600');
-            submitButton.classList.add('bg-red-600');
+            submitButton.classList.add('bg-red-600', 'text-white');
         }
 
         // Volta ao estado original após 3 segundos
         setTimeout(() => {
             submitButton.textContent = originalText;
             submitButton.disabled = false;
-            submitButton.classList.remove('bg-green-600', 'bg-red-600', 'bg-gray-600', 'cursor-not-allowed');
-            submitButton.classList.add('bg-green-600', 'hover:bg-green-700');
+            submitButton.classList.remove('bg-red-600', 'bg-gray-600', 'cursor-not-allowed', 'text-white', 'text-gray-300');
+            submitButton.classList.add('bg-green-600', 'hover:bg-green-700', 'text-black');
         }, 3000);
     };
 
     return (
-        <div className="min-h-screen bg-black text-green-400 font-mono relative overflow-hidden">
+        <div className="min-h-screen bg-black text-green-400 font-mono relative overflow-x-hidden">
 
             {/* --- EFEITO: Scanline/CRT Overlay --- */}
             <div className="scanline-overlay"></div>
 
             {/* Background Video */}
-            <video
+            {/* O vídeo de fundo é um bom toque, mas pode ser pesado. Mantenha se for pequeno. */}
+            {/* <video
                 autoPlay
                 loop
                 muted
@@ -422,7 +432,10 @@ const App = () => {
             >
                 <source src="/images/video.mp4" type="video/mp4" />
                 Seu navegador não suporta vídeos.
-            </video>
+            </video> */}
+            {/* Adicione um fundo estático simples como fallback se o vídeo for removido/pesado */}
+            <div className="fixed inset-0 bg-black opacity-90 z-0"></div>
+
 
             {/* Custom Mouse Follower */}
             <div
@@ -434,7 +447,7 @@ const App = () => {
             {/* Navigation Bar */}
             <NavigationBar activeSection={activeSection} scrollToSection={scrollToSection} />
 
-            <main className="pt-20">
+            <main className="pt-20 relative z-10">
 
                 {/* --- Home Section --- */}
                 <motion.section
@@ -462,7 +475,7 @@ const App = () => {
                         <div className="flex justify-center space-x-6">
                             <motion.a
                                 href="#projects"
-                                onClick={() => scrollToSection('projects')}
+                                onClick={(e) => { e.preventDefault(); scrollToSection('projects'); }}
                                 className="bg-green-600 hover:bg-green-700 text-black font-bold py-2 px-5 transition-transform transform border border-green-400 terminal-button"
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
@@ -471,7 +484,7 @@ const App = () => {
                             </motion.a>
                             <motion.a
                                 href="#contact"
-                                onClick={() => scrollToSection('contact')}
+                                onClick={(e) => { e.preventDefault(); scrollToSection('contact'); }}
                                 className="border border-green-600 text-green-400 hover:bg-green-700 hover:text-black font-bold py-2 px-5 transition-transform transform terminal-button"
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
@@ -488,7 +501,7 @@ const App = () => {
                     className="py-20 bg-gray-950 p-4 border-t border-b border-green-700"
                     initial={{ opacity: 0, y: 50 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.4 }}
+                    viewport={{ once: true, amount: 0.2 }}
                     transition={{ duration: 0.8 }}
                 >
                     <div className="container mx-auto max-w-4xl border-2 border-green-600 p-8 bg-black/70">
@@ -497,19 +510,17 @@ const App = () => {
                         </h2>
                         <div className="flex flex-col md:flex-row md:items-start md:space-x-10">
                             <motion.div
-                                className="md:w-1/3 mb-8 md:mb-0 flex flex-col items-center" // Adicionado flexbox para centralizar imagem e texto
+                                className="md:w-1/3 mb-8 md:mb-0 flex flex-col items-center"
                                 initial={{ opacity: 0, scale: 0.8 }}
                                 whileInView={{ opacity: 1, scale: 1 }}
                                 viewport={{ once: true, amount: 0.5 }}
                                 transition={{ duration: 0.7, delay: 0.2 }}
                             >
-                                {/* CORREÇÃO DA IMAGEM APLICADA AQUI */}
                                 <img
                                     src="images/img.jpg"
                                     alt="Gelson do Souto - Perfil"
                                     className="rounded-none w-64 h-64 object-cover border-2 border-green-500 filter grayscale contrast-120 hover:filter-none transition-filter duration-500"
                                 />
-                                {/* NOVO CÓDIGO: Nome do perfil visível */}
                                 <h3 className="text-xl font-bold text-center text-green-300 mt-4">
                                     Gelson do Souto
                                 </h3>
@@ -521,7 +532,7 @@ const App = () => {
                                 className="md:w-2/3 text-lg text-gray-300 leading-relaxed"
                                 initial={{ opacity: 0, x: 50 }}
                                 whileInView={{ opacity: 1, x: 0 }}
-                                viewport={{ once: true, amount: 0.5 }}
+                                viewport={{ once: true, amount: 0.2 }}
                                 transition={{ duration: 0.7, delay: 0.3 }}
                             >
                                 <p className="mb-4">
@@ -550,19 +561,19 @@ const App = () => {
                                     </div>
 
                                     <motion.div
+                                        key={activeSkillCategory} // Key change for a smooth transition animation when switching tabs
                                         className="bg-black p-5 rounded-none border-2 border-green-800 shadow-inner shadow-green-900/20"
-                                        initial={{ opacity: 0, y: 20 }}
-                                        whileInView={{ opacity: 1, y: 0 }}
-                                        viewport={{ once: true, amount: 0.5 }}
-                                        transition={{ duration: 0.6, delay: 0.4 }}
+                                        initial={{ opacity: 0, y: 10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ duration: 0.3 }}
                                     >
                                         <h3 className="text-lg font-semibold text-green-400 mb-3">
                                             $ {skillCategoriesData.find(cat => cat.id === activeSkillCategory)?.name} <span className="animate-pulse">_</span>
                                         </h3>
-                                        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-gray-300">
+                                        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-gray-300">
                                             {skillCategoriesData.find(cat => cat.id === activeSkillCategory)?.skills.map((skill, idx) => (
                                                 <li key={idx} className="flex items-center space-x-2 text-sm">
-                                                    <span className="text-green-400">$</span>
+                                                    <span className="text-green-400">{'>>'}</span>
                                                     <span>{skill}</span>
                                                 </li>
                                             ))}
@@ -578,55 +589,51 @@ const App = () => {
                     </div>
                 </motion.section>
 
-                {/* --- Projects Section with Carousel --- */}
+                {/* --- Projects Section with GRID (Replacement for Carousel) --- */}
                 <motion.section
                     id="projects"
                     className="py-20 bg-black p-4 border-t border-b border-green-700"
                     initial={{ opacity: 0, y: 50 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.3 }}
+                    viewport={{ once: true, amount: 0.1 }}
                     transition={{ duration: 0.8 }}
                 >
-                    <div className="container mx-auto max-w-5xl">
+                    <div className="container mx-auto max-w-6xl">
                         <h2 className="text-3xl font-bold text-center text-green-400 mb-10">
                             $ cat /Projects/List <span className="animate-pulse">_</span>
                         </h2>
-                        <div className="relative w-full overflow-hidden border-2 border-green-600 p-4 bg-gray-900/50">
-                            <div
-                                className="flex space-x-8 animate-scroll-terminal"
-                                style={{ animationDuration: `${projectsData.length * 5}s` }}
-                            >
-                                {duplicatedProjects.map((project, index) => (
-                                    <ProjectCard key={index} project={project} index={index} />
-                                ))}
-                            </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-4 bg-gray-900/50 border-2 border-green-600">
+                            {projectsData.map((project, index) => (
+                                <ProjectCard key={index} project={project} index={index} />
+                            ))}
                         </div>
+                        <p className="text-center text-gray-400 mt-6 text-sm">
+                            <Code size={16} className="inline mr-1" /> Infraestrutura Sólida, Código Limpo.
+                        </p>
                     </div>
                 </motion.section>
 
-                {/* --- Certificates Section with Carousel --- */}
+                {/* --- Certificates Section with GRID (Replacement for Carousel) --- */}
                 <motion.section
                     id="certificates"
                     className="py-20 bg-gray-950 p-4 border-t border-b border-green-700"
                     initial={{ opacity: 0, y: 50 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.3 }}
+                    viewport={{ once: true, amount: 0.1 }}
                     transition={{ duration: 0.8 }}
                 >
-                    <div className="container mx-auto max-w-4xl">
+                    <div className="container mx-auto max-w-6xl">
                         <h2 className="text-3xl font-bold text-center text-green-400 mb-10">
                             $ ls /Certificates <span className="animate-pulse">_</span>
                         </h2>
-                        <div className="relative w-full overflow-hidden border-2 border-green-600 p-4 bg-black/70">
-                            <div
-                                className="flex space-x-8 animate-scroll-terminal"
-                                style={{ animationDuration: `${certificatesData.length * 6}s` }}
-                            >
-                                {duplicatedCertificates.map((cert, index) => (
-                                    <CertificateCard key={index} cert={cert} index={index} />
-                                ))}
-                            </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-4 bg-black/70 border-2 border-green-600">
+                            {certificatesData.map((cert, index) => (
+                                <CertificateCard key={index} cert={cert} index={index} />
+                            ))}
                         </div>
+                        <p className="text-center text-gray-400 mt-6 text-sm">
+                            <Award size={16} className="inline mr-1" /> Conhecimento Validado para a Próxima Geração de Sistemas.
+                        </p>
                     </div>
                 </motion.section>
 
@@ -661,75 +668,123 @@ const App = () => {
                                 className="space-y-4"
                             >
                                 <div>
-                                    <label htmlFor="name" className="block text-green-400 text-sm font-bold mb-1">
-                                        Nome: <span className="text-gray-500">_</span>
-                                    </label>
-                                    <motion.input
+                                    <label htmlFor="name" className="block text-sm font-bold text-green-400 mb-1">Nome:</label>
+                                    <input
                                         type="text"
                                         id="name"
                                         name="name"
-                                        className="shadow appearance-none border border-green-700 rounded-none w-full py-2 px-3 text-gray-100 leading-tight focus:outline-none focus:ring-1 focus:ring-green-400 bg-gray-900 input-terminal-glow"
-                                        placeholder="Nome de Utilizador"
                                         required
-                                        transition={{ duration: 0.4, delay: 0.3 }}
+                                        className="w-full bg-gray-900/80 border border-green-700 text-gray-200 p-3 text-sm focus:border-green-400 focus:ring focus:ring-green-400/50 transition duration-150"
                                     />
                                 </div>
                                 <div>
-                                    <label htmlFor="_replyto" className="block text-green-400 text-sm font-bold mb-1">
-                                        Email: <span className="text-gray-500">_</span>
-                                    </label>
-                                    <motion.input
+                                    <label htmlFor="email" className="block text-sm font-bold text-green-400 mb-1">Email:</label>
+                                    <input
                                         type="email"
                                         id="email"
                                         name="_replyto"
-                                        className="shadow appearance-none border border-green-700 rounded-none w-full py-2 px-3 text-gray-100 leading-tight focus:outline-none focus:ring-1 focus:ring-green-400 bg-gray-900 input-terminal-glow"
-                                        placeholder="endereço@servidor.com"
                                         required
-                                        transition={{ duration: 0.4, delay: 0.4 }}
+                                        className="w-full bg-gray-900/80 border border-green-700 text-gray-200 p-3 text-sm focus:border-green-400 focus:ring focus:ring-green-400/50 transition duration-150"
                                     />
                                 </div>
                                 <div>
-                                    <label htmlFor="message" className="block text-green-400 text-sm font-bold mb-1">
-                                        Mensagem: <span className="text-gray-500">_</span>
-                                    </label>
-                                    <motion.textarea
+                                    <label htmlFor="message" className="block text-sm font-bold text-green-400 mb-1">Mensagem:</label>
+                                    <textarea
                                         id="message"
                                         name="message"
-                                        rows="5"
-                                        className="shadow appearance-none border border-green-700 rounded-none w-full py-2 px-3 text-gray-100 leading-tight focus:outline-none focus:ring-1 focus:ring-green-400 bg-gray-900 input-terminal-glow"
-                                        placeholder="Digite a sua mensagem aqui..."
+                                        rows="4"
                                         required
-                                        transition={{ duration: 0.4, delay: 0.5 }}
-                                    ></motion.textarea>
+                                        className="w-full bg-gray-900/80 border border-green-700 text-gray-200 p-3 text-sm focus:border-green-400 focus:ring focus:ring-green-400/50 transition duration-150"
+                                    ></textarea>
                                 </div>
-                                <motion.button
-                                    type="submit"
-                                    className="bg-green-600 hover:bg-green-700 text-black font-bold py-2 px-5 w-full transition-transform transform border border-green-400 terminal-button"
-                                    whileHover={{ scale: 1.02 }}
-                                    whileTap={{ scale: 0.98 }}
-                                >
-                                    $ send: 'Mensagem'
-                                </motion.button>
+                                <div className="flex justify-between items-center pt-4">
+                                    <motion.button
+                                        type="submit"
+                                        className="flex items-center space-x-2 bg-green-600 text-black font-bold py-3 px-6 terminal-button border border-green-400 transition duration-150 hover:bg-green-700"
+                                        whileHover={{ scale: 1.05 }}
+                                        whileTap={{ scale: 0.95 }}
+                                    >
+                                        <Send size={18} />
+                                        <span>Enviar Mensagem</span>
+                                    </motion.button>
+                                    <div className="flex space-x-4">
+                                        <a href="https://linkedin.com/in/gelson-do-souto" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-green-400 transition-colors terminal-link" aria-label="LinkedIn">
+                                            <Linkedin size={24} />
+                                        </a>
+                                        <a href="https://github.com/Gelson-do-Souto" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-green-400 transition-colors terminal-link" aria-label="GitHub">
+                                            <Github size={24} />
+                                        </a>
+                                    </div>
+                                </div>
                             </form>
-                            <div className="flex justify-center space-x-6 mt-8">
-                                <a href="https://www.linkedin.com/in/gelson-do-souto-214486259/" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 transition-colors">
-                                    <Linkedin size={28} />
-                                </a>
-                                <a href="https://github.com/Gelson-do-Souto" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-gray-300 transition-colors">
-                                    <Github size={28} />
-                                </a>
-                            </div>
                         </motion.div>
                     </div>
                 </motion.section>
-
-                {/* Footer */}
-                <footer className="py-8 bg-black border-t border-green-700 text-center text-gray-500 text-sm">
-                    <p>&copy; 2024 Gelson do Souto. All rights reserved.</p>
-                    <p>Feito com <span className="text-red-500">❤️</span> e React.js</p>
-                </footer>
-
             </main>
+
+            {/* Footer */}
+            <footer className="py-6 border-t border-green-700 text-center text-sm text-gray-500 bg-black/80">
+                <p>
+                    © {new Date().getFullYear()} Gelson do Souto. Construído com <span className="text-red-500">{'<3'}</span> e React/TailwindCSS.
+                </p>
+                <p className="mt-1">
+                    <span className="text-green-400">STATUS:</span> <span className="text-cyan-400">Backend System Ready.</span>
+                </p>
+            </footer>
+
+            {/* TailwindCSS Stylesheet (Assume this is included externally or in global CSS) */}
+            <style jsx global>{`
+                /* Adicione esta classe ao seu CSS global (ex: globals.css ou styles.css) */
+                .animate-fadeInChar {
+                    animation: fadeInChar 0.01s forwards;
+                }
+
+                @keyframes fadeInChar {
+                    to {
+                        opacity: 1;
+                    }
+                }
+
+                .text-shadow-terminal {
+                    text-shadow: 0 0 5px rgba(52, 211, 163, 0.8), 0 0 10px rgba(52, 211, 163, 0.5);
+                }
+
+                .cursor-terminal-glow {
+                    box-shadow: 0 0 10px rgba(52, 211, 163, 0.9);
+                }
+
+                .terminal-button {
+                    box-shadow: 3px 3px 0 0 rgba(52, 211, 163, 0.6);
+                    transition: box-shadow 0.15s ease-out, transform 0.15s ease-out;
+                }
+
+                .terminal-button:hover {
+                    box-shadow: 4px 4px 0 0 rgba(52, 211, 163, 0.8);
+                }
+
+                .terminal-link:hover {
+                    text-shadow: 0 0 5px rgba(52, 211, 163, 0.6);
+                }
+
+                /* CRT Scanline Effect */
+                .scanline-overlay {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    pointer-events: none;
+                    z-index: 50;
+                    opacity: 0.15;
+                    background: repeating-linear-gradient(
+                        0deg,
+                        rgba(0, 0, 0, 0.1) 0px,
+                        rgba(0, 0, 0, 0.1) 1px,
+                        transparent 2px,
+                        transparent 4px
+                    );
+                }
+            `}</style>
         </div>
     );
 };
